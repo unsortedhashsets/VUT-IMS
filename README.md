@@ -1,1 +1,1 @@
-# VUT--IMS
+VUT-IMS
