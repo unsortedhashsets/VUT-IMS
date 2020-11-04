@@ -1,6 +1,6 @@
 VUT-IMS
 
-1) Download library
+1) Download library `wget https://www.fit.vutbr.cz/~peringer/SIMLIB/source/simlib-3.07-20181019.tar.gz`
 
 2) Inside folder `sudo make install`
 
