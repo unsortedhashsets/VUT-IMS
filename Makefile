@@ -1,14 +1,7 @@
-#################################################################
-# Makefile for SIMLIB (unix)
+CC=g++
+FLAGS=-g -O2 -Wall -Werror -pedantic -std=c++11
+FILE = model
+LIBRARIES = src/get_params.cpp
 
-MAKEFILE = Makefile.`uname -s`-`uname -m`
-MAKEFILE32 = Makefile.`uname -s`-i686
-MAKEFILE64 = Makefile.`uname -s`-x86_64
-
-#debug: 
-#	make -f Makefile.Linux-i686
-OBJECT = ball2.cc
-
-#################################################################
-all: 
-	g++ -g -O2 -o model $(OBJECT) -lsimlib -lm
+all:
+	$(CC) $(FLAGS) $(FILE).cpp $(LIBRARIES) -o $(FILE) -lsimlib -lm
