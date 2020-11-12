@@ -62,11 +62,11 @@ int range = 150;
 bool verbose = false;
 const double StepPrn = 1; // step of output
 
-class BLA {
+class Covid19 {
  public:
   Parameter s_init, beta, mu, it, Dd, Fr;
   Integrator S, I, R, D;
-  BLA(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr ) :
+  Covid19(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr ) :
     s_init(_s_init), beta(_beta), mu(_mu), it(_it), Dd(_Dd), Fr(_Fr),
     S (-beta * I * mu * (S / s_init) / it , s_init.Value()),
     I ( beta * I * mu * (S / s_init) / it - I / Dd , 25.0),
@@ -85,12 +85,12 @@ class BLA {
 
 };
 
-BLA e(0,0,0,0,0,0);
+Covid19 c19(0,0,0,0,0,0);
 
 void Sample() {
-  Print("%g;%g;%g;%g;%g\n", Time, e.S.Value(), e.I.Value(), e.R.Value(), e.D.Value());
+  Print("%g;%g;%g;%g;%g\n", Time, c19.S.Value(), c19.I.Value(), c19.R.Value(), c19.D.Value());
   if (verbose) {
-    cout << Time << ' ' << e.S.Value() << ' ' << e.I.Value() << ' ' << e.R.Value() << ' ' << e.D.Value() << '\n';
+    cout << Time << ' ' << c19.S.Value() << ' ' << c19.I.Value() << ' ' << c19.R.Value() << ' ' << c19.D.Value() << '\n';
   }
 }
 
@@ -99,7 +99,7 @@ Sampler S(Sample, StepPrn);
 // experiment description:
 int main(int argc, char *argv[]) {  
   get_params params(argc, argv);
-  e.SetParameters(params.beta, params.mu, params.S, params.it, params.Dd, params.Fr);
+  c19.SetParameters(params.beta, params.mu, params.S, params.it, params.Dd, params.Fr);
   verbose = params.verbose;
   SetOutput("covid19.csv");
   Print("# Modeling containing covid-19 infection. A conceptual model.\n");

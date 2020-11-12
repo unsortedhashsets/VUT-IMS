@@ -32,5 +32,5 @@
 *.app
 
 #model
-model
-model.csv
+covid19
+covid19.csv
