@@ -94,5 +94,5 @@ void get_params::print_params() {
     cout << "\n\tContacts rate:\t\t\t\t" << this->mu << "\tContacts/person\tAssumed";
     cout << "\n\tHospital capacity:\t\t\t" << this->HC << "\tBeds\t\tAssumed";
     cout << "\n\tFatality rate:\t\t\t\t" << this->Fr << "\t%\t\tWHO report 73 (2020), Li et al.(2020)";
-    cout << "\n\tVerbosity:\t\t\t\t" << this->verbose << endl;
+    cout << "\n\tVerbosity:\t\t\t\t" << this->verbose << endl << endl;
 }
