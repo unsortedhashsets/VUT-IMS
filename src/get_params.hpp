@@ -9,14 +9,14 @@ using namespace std;
 
 class get_params {
    public:
-    int susceptible;
-    int incubation_time;
-    int disease_duration;
-    float fraction_requiring_hospitalization;
-    float infectivity;
-    int contacts_rate;
-    int hospital_capacity;
-    float fatality_rate;
+    double S;
+    double it;
+    double Dd;
+    double Fh;
+    double beta;
+    double mu;
+    double HC;
+    double Fr;
     bool verbose;
     get_params(int argc, char *argv[]);
     get_params();
