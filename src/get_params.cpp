@@ -11,6 +11,7 @@
 #define DEF_FR   0.03;    //  Fatality rate:                      0.03  %               WHO report 73 (2020), Li et al.(2020)
 
 get_params::get_params(int argc, char *argv[]) {
+
     this->S = DEF_S;   // -s --susceptible
     this->mu = DEF_MU;  // -c --mu
     this->HC = DEF_HC;  //-h --HC
@@ -22,6 +23,7 @@ get_params::get_params(int argc, char *argv[]) {
     this->Fr = DEF_FR;
 
     this->verbose = false;
+    this->range = 150;
 
     get_arguments(argc, argv);
 }
@@ -34,11 +36,12 @@ void get_params::get_arguments(int argc, char *argv[]) {
             {
                 {"susceptible", required_argument, 0, 's'},
                 {"mu", required_argument, 0, 'c'},
-                {"HC", required_argument, 0, 'h'},
+                {"hc", required_argument, 0, 'h'},
+                {"range", required_argument, 0, 'r'},
                 {"verbose", no_argument, 0, 'v'}
             };
 
-        c = getopt_long(argc, argv, "vs:c:h:", long_options, nullptr);
+        c = getopt_long(argc, argv, "vs:c:h:r:", long_options, nullptr);
 
         // detect the end of the options
         if (c == -1) {
@@ -54,6 +57,9 @@ void get_params::get_arguments(int argc, char *argv[]) {
                     break;
                 case 'h':
                     this->HC = stod(optarg);
+                    break;
+                case 'r':
+                    this->range = stoi(optarg);
                     break;
                 case 'v':
                     this->verbose = true;
@@ -98,5 +104,6 @@ void get_params::print_params() {
     cout << "\n\tContacts rate:\t\t\t\t" << this->mu << "\tContacts/person\tAssumed";
     cout << "\n\tHospital capacity:\t\t\t" << this->HC << "\tBeds\t\tAssumed";
     cout << "\n\tFatality rate:\t\t\t\t" << this->Fr << "\t%\t\tWHO report 73 (2020), Li et al.(2020)";
+    cout << "\n\tRange:\t\t\t\t\t" << this->range << "\tDays";
     cout << "\n\tVerbosity:\t\t\t\t" << this->verbose << endl << endl;
 }

@@ -1,17 +1,19 @@
 ////////////////////////////////////////////////////////////////////////////
-// Model BLABLA-test               SIMLIB/C++
+// Lockdown, one, two, none, or smart.                            SIMLIB/C++
+// Modeling containing covid-19 infection.
+// A conceptual model              
 //
-// BLABLA equations:
+// Model equations:
 //
 //      dS/dt = -beta * Ci * I / it
-//      dI/dt =  beta * C - I / Dd * (1-FR)
-//      dR/dt =  I / Dd * (1-FR)
-//      dD/dt =  I / Dd * FR
+//      dI/dt =  beta * Ci - I / Dd
+//      dR/dt =  I / Dd * (1-Fr)
+//      dD/dt =  I / Dd * Fr
 //
 // Auxiliar equations:
 //
-//      Ci  = C * F
-//      F   = (S-I)/S
+//      Ci  = C * F 
+//      F   = (S_init)/S
 //      HiC = SC / HC
 //      SC  = I * Fh
 //
@@ -22,7 +24,7 @@
 //           | I * mu                 if no-lockdown
 //           | I * mu * barred_lambda if standard-lockdown
 //      C  = | I * mu * k             if smart-lockdown
-//           | I * mu * q             if Post-lockdown
+//           | I * mu * q             if post-lockdown
 //
 // where:
 //       Parameters:
@@ -56,6 +58,7 @@
 #include <cmath>
 using namespace std;
 
+int range = 150;
 bool verbose = false;
 const double StepPrn = 1; // step of output
 
@@ -65,10 +68,10 @@ class BLA {
   Integrator S, I, R, D;
   BLA(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr ) :
     s_init(_s_init), beta(_beta), mu(_mu), it(_it), Dd(_Dd), Fr(_Fr),
-    S (-beta * I * mu * (S/s_init) / it , s_init.Value()),
-    I ( beta * I * mu * (S/s_init) / it - I / Dd , 25.0),
+    S (-beta * I * mu * (S / s_init) / it , s_init.Value()),
+    I ( beta * I * mu * (S / s_init) / it - I / Dd , 25.0),
     R ( I / Dd * (1-Fr)),
-    D ( I / Dd * Fr) {}
+    D ( I / Dd * Fr) {/*TODO: something strange here, mb we can use that place for conditions?*/}
 
     void SetParameters(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr ) { 
         s_init = _s_init;
@@ -82,7 +85,7 @@ class BLA {
 
 };
 
-BLA e(0.025,70.0,100000.0,5.0,14.0,0.03);
+BLA e(0,0,0,0,0,0);
 
 void Sample() {
   Print("%g;%g;%g;%g;%g\n", Time, e.S.Value(), e.I.Value(), e.R.Value(), e.D.Value());
@@ -95,17 +98,15 @@ Sampler S(Sample, StepPrn);
 
 // experiment description:
 int main(int argc, char *argv[]) {  
-  if (argc > 1){
-    get_params params(argc, argv);
-    e.SetParameters(params.beta, params.mu, params.S, params.it, params.Dd, params.Fr);
-    verbose = params.verbose;
-  }
-  SetOutput("model.csv");
-  Print("# BLA equation output \n");
+  get_params params(argc, argv);
+  e.SetParameters(params.beta, params.mu, params.S, params.it, params.Dd, params.Fr);
+  verbose = params.verbose;
+  SetOutput("covid19.csv");
+  Print("# Modeling containing covid-19 infection. A conceptual model.\n");
   if (verbose) {
-    cout << "# BLA equation output \n";
+    cout << "# Modeling containing covid-19 infection. A conceptual model.\n";
   }
   SetStep(1e-8,1e-3);   // set step size range
-  Init(0,150);          // experiment initialization 
+  Init(0,params.range);        // experiment initialization 
   Run();                // simulation
 }

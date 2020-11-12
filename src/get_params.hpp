@@ -17,6 +17,7 @@ class get_params {
     double mu;
     double HC;
     double Fr;
+    int range;
     bool verbose;
     get_params(int argc, char *argv[]);
     get_params();
