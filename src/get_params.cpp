@@ -1,21 +1,25 @@
 #include "get_params.hpp"
 
-#define IT   5;       //  Incubation time:                    5     Days            Wu et al.(2020)
-#define DD   14;      //  Disease duration:                   14    Days            Wu et al.(2020)
-#define FH   0.13;    //  Fraction requiring hospitalization: 0.13  %               WHO report 73 (2020), Li et al.(2020)
-#define BETA 0.025;   //  Infectivity:                        0.025 Dimensionless   Estimated with RO
-#define FR   0.03;    //  Fatality rate:                      0.03  %               WHO report 73 (2020), Li et al.(2020)
+#define DEF_S    100000;  //  Susceptible:       X People          Assumed
+#define DEF_MU   70;      //  Contacts rate:     Y Contacts/person Assumed
+#define DEF_HC   1000;    //  Hospital capacity: Z Beds            Assumed
+
+#define DEF_IT   5;       //  Incubation time:                    5     Days            Wu et al.(2020)
+#define DEF_DD   14;      //  Disease duration:                   14    Days            Wu et al.(2020)
+#define DEF_FH   0.13;    //  Fraction requiring hospitalization: 0.13  %               WHO report 73 (2020), Li et al.(2020)
+#define DEF_BETA 0.025;   //  Infectivity:                        0.025 Dimensionless   Estimated with RO
+#define DEF_FR   0.03;    //  Fatality rate:                      0.03  %               WHO report 73 (2020), Li et al.(2020)
 
 get_params::get_params(int argc, char *argv[]) {
-    this->S = 0;   // -s --susceptible
-    this->mu = 0;  // -c --mu
-    this->HC = 0;  //-h --HC
+    this->S = DEF_S;   // -s --susceptible
+    this->mu = DEF_MU;  // -c --mu
+    this->HC = DEF_HC;  //-h --HC
 
-    this->it = IT;
-    this->Dd = DD;
-    this->Fh = FH;
-    this->beta = BETA;
-    this->Fr = FR;
+    this->it = DEF_IT;
+    this->Dd = DEF_DD;
+    this->Fh = DEF_FH;
+    this->beta = DEF_BETA;
+    this->Fr = DEF_FR;
 
     this->verbose = false;
 

@@ -69,6 +69,7 @@ class BLA {
     I ( beta * I * mu * (S/s_init) / it - I / Dd , 25.0),
     R ( I / Dd * (1-Fr)),
     D ( I / Dd * Fr) {}
+
     void SetParameters(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr ) { 
         s_init = _s_init;
         beta = _beta;
@@ -78,16 +79,15 @@ class BLA {
         Fr = _Fr;
         S.Init(_s_init);
     }
+
 };
 
-BLA e(0,0,0,0,0,0);
+BLA e(0.025,70.0,100000.0,5.0,14.0,0.03);
 
 void Sample() {
   Print("%g;%g;%g;%g;%g\n", Time, e.S.Value(), e.I.Value(), e.R.Value(), e.D.Value());
   if (verbose) {
-    if (Time == 250){
-        cout << Time << ' ' << e.S.Value() << ' ' << e.I.Value() << ' ' << e.R.Value() << ' ' << e.D.Value() << '\n';
-    }
+    cout << Time << ' ' << e.S.Value() << ' ' << e.I.Value() << ' ' << e.R.Value() << ' ' << e.D.Value() << '\n';
   }
 }
 
@@ -95,15 +95,17 @@ Sampler S(Sample, StepPrn);
 
 // experiment description:
 int main(int argc, char *argv[]) {  
-  get_params params(argc, argv);
-  e.SetParameters(params.beta, params.mu, params.S, params.it, params.Dd, params.Fr);
-  verbose = params.verbose;
+  if (argc > 1){
+    get_params params(argc, argv);
+    e.SetParameters(params.beta, params.mu, params.S, params.it, params.Dd, params.Fr);
+    verbose = params.verbose;
+  }
   SetOutput("model.csv");
   Print("# BLA equation output \n");
   if (verbose) {
     cout << "# BLA equation output \n";
   }
   SetStep(1e-8,1e-3);   // set step size range
-  Init(0,250);          // experiment initialization 
+  Init(0,150);          // experiment initialization 
   Run();                // simulation
 }
