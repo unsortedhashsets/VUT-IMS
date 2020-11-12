@@ -65,8 +65,8 @@ class BLA {
   Integrator S, I, R, D;
   BLA(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr ) :
     s_init(_s_init), beta(_beta), mu(_mu), it(_it), Dd(_Dd), Fr(_Fr),
-    S (-beta * I * mu * ((s_init-I-R-D)/s_init) / it , s_init.Value()),
-    I ( beta * I * mu * ((s_init-I-R-D)/s_init) / it - I / Dd * (1-Fr) , 25.0),
+    S (-beta * I * mu * (S/s_init) / it , s_init.Value()),
+    I ( beta * I * mu * (S/s_init) / it - I / Dd , 25.0),
     R ( I / Dd * (1-Fr)),
     D ( I / Dd * Fr) {}
     void SetParameters(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr ) { 
@@ -85,7 +85,9 @@ BLA e(0,0,0,0,0,0);
 void Sample() {
   Print("%g;%g;%g;%g;%g\n", Time, e.S.Value(), e.I.Value(), e.R.Value(), e.D.Value());
   if (verbose) {
-    cout << Time << ' ' << e.S.Value() << ' ' << e.I.Value() << ' ' << e.R.Value() << ' ' << e.D.Value() << '\n';
+    if (Time == 250){
+        cout << Time << ' ' << e.S.Value() << ' ' << e.I.Value() << ' ' << e.R.Value() << ' ' << e.D.Value() << '\n';
+    }
   }
 }
 
