@@ -62,36 +62,56 @@ int range = 150;
 bool verbose = false;
 const double StepPrn = 1; // step of output
 
-class Covid19 {
+class Covid19{
  public:
-  Parameter s_init, beta, mu, it, Dd, Fr;
+  Parameter s_init, beta, mu, it, Dd, Fr, HC, Fh;
   Integrator S, I, R, D;
-  Covid19(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr ) :
-    s_init(_s_init), beta(_beta), mu(_mu), it(_it), Dd(_Dd), Fr(_Fr),
+  Covid19(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr, double _HC, double _Fh  ) :
+
+    s_init(_s_init), beta(_beta), mu(_mu), it(_it), Dd(_Dd), Fr(_Fr), HC(_HC), Fh(_Fh),
     S (-beta * I * mu * (S / s_init) / it , s_init.Value()),
     I ( beta * I * mu * (S / s_init) / it - I / Dd , 25.0),
     R ( I / Dd * (1-Fr)),
-    D ( I / Dd * Fr) {/*TODO: something strange here, mb we can use that place for conditions?*/}
+    D ( I / Dd * Fr) {}
 
-    void SetParameters(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr ) { 
+    void SetParameters(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr, double _HC, double _Fh ) { 
         s_init = _s_init;
         beta = _beta;
         mu = _mu;
         it = _it;
         Dd = _Dd;
         Fr = _Fr;
+        HC = _HC;
+        Fh = _Fh;
         S.Init(_s_init);
     }
 
+    void Conditions() {
+      double SC = I.Value() * Fh.Value();
+      double HiC = SC / HC.Value();
+      if ( HiC > 30.0 ){
+          Fr = 0.10;
+      } else if ( HiC > 4.0 )
+          Fr = 0.07;
+      else{
+          Fr = 0.03;
+      }
+    }
+
+    void Out() {
+      Print("%g;%g;%g;%g;%g\n", Time, S.Value(), I.Value(), R.Value(), D.Value());
+      if (verbose) {
+         cout << Time << ' ' << S.Value() << ' ' << I.Value() << ' ' << R.Value() << ' ' << D.Value() << '\n';
+      }
+    }
+    
 };
 
-Covid19 c19(0,0,0,0,0,0);
+Covid19 c19(0,0,0,0,0,0,0,0);
 
-void Sample() {
-  Print("%g;%g;%g;%g;%g\n", Time, c19.S.Value(), c19.I.Value(), c19.R.Value(), c19.D.Value());
-  if (verbose) {
-    cout << Time << ' ' << c19.S.Value() << ' ' << c19.I.Value() << ' ' << c19.R.Value() << ' ' << c19.D.Value() << '\n';
-  }
+void Sample() { 
+  c19.Out();
+  c19.Conditions();
 }
 
 Sampler S(Sample, StepPrn);
@@ -99,7 +119,7 @@ Sampler S(Sample, StepPrn);
 // experiment description:
 int main(int argc, char *argv[]) {  
   get_params params(argc, argv);
-  c19.SetParameters(params.beta, params.mu, params.S, params.it, params.Dd, params.Fr);
+  c19.SetParameters(params.beta, params.mu, params.S, params.it, params.Dd, params.Fr, params.HC, params.Fh);
   verbose = params.verbose;
   SetOutput("covid19.csv");
   Print("# Modeling containing covid-19 infection. A conceptual model.\n");
