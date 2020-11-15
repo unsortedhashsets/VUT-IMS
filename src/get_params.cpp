@@ -1,14 +1,6 @@
 #include "get_params.hpp"
 
-#define DEF_S    100000;  //  Susceptible:       X People          Assumed
-#define DEF_MU   70;      //  Contacts rate:     Y Contacts/person Assumed
-#define DEF_HC   1000;    //  Hospital capacity: Z Beds            Assumed
 
-#define DEF_IT   5;       //  Incubation time:                    5     Days            Wu et al.(2020)
-#define DEF_DD   14;      //  Disease duration:                   14    Days            Wu et al.(2020)
-#define DEF_FH   0.13;    //  Fraction requiring hospitalization: 0.13  %               WHO report 73 (2020), Li et al.(2020)
-#define DEF_BETA 0.025;   //  Infectivity:                        0.025 Dimensionless   Estimated with RO
-#define DEF_FR   0.03;    //  Fatality rate:                      0.03  %               WHO report 73 (2020), Li et al.(2020)
 
 get_params::get_params(int argc, char *argv[]) {
 
@@ -21,6 +13,8 @@ get_params::get_params(int argc, char *argv[]) {
     this->Fh = DEF_FH;
     this->beta = DEF_BETA;
     this->Fr = DEF_FR;
+    this->type = DEF_LOCK_TYPE;
+    this->hi = DEF_HI;
 
     this->verbose = false;
     this->range = 150;
@@ -38,10 +32,11 @@ void get_params::get_arguments(int argc, char *argv[]) {
                 {"mu", required_argument, 0, 'c'},
                 {"hc", required_argument, 0, 'h'},
                 {"range", required_argument, 0, 'r'},
-                {"verbose", no_argument, 0, 'v'}
+                {"verbose", no_argument, 0, 'v'},
+                {"type", no_argument, 0, 't'}
             };
 
-        c = getopt_long(argc, argv, "vs:c:h:r:", long_options, nullptr);
+        c = getopt_long(argc, argv, "vs:c:h:r:t:", long_options, nullptr);
 
         // detect the end of the options
         if (c == -1) {
@@ -57,6 +52,9 @@ void get_params::get_arguments(int argc, char *argv[]) {
                     break;
                 case 'h':
                     this->HC = stod(optarg);
+                    break;
+                case 't':
+                    this->type = stod(optarg);
                     break;
                 case 'r':
                     this->range = stoi(optarg);
@@ -105,5 +103,6 @@ void get_params::print_params() {
     cout << "\n\tHospital capacity:\t\t\t" << this->HC << "\tBeds\t\tAssumed";
     cout << "\n\tFatality rate:\t\t\t\t" << this->Fr << "\t%\t\tWHO report 73 (2020), Li et al.(2020)";
     cout << "\n\tRange:\t\t\t\t\t" << this->range << "\tDays";
+    cout << "\n\tType of lockdown:\t\t\t" << this->type;
     cout << "\n\tVerbosity:\t\t\t\t" << this->verbose << endl << endl;
 }

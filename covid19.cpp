@@ -22,7 +22,7 @@
 //           | 10% if 30 < HiC
 //
 //           | I * mu                 if no-lockdown
-//           | I * mu * barred_lambda if standard-lockdown
+//           | I * mu * hi            if standard-lockdown
 //      C  = | I * mu * k             if smart-lockdown
 //           | I * mu * q             if post-lockdown
 //
@@ -59,22 +59,33 @@
 using namespace std;
 
 int range = 150;
+int type = 0;
 bool verbose = false;
 const double StepPrn = 1; // step of output
 
-class Covid19{
- public:
-  Parameter s_init, beta, mu, it, Dd, Fr, HC, Fh;
-  Integrator S, I, R, D;
-  Covid19(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr, double _HC, double _Fh  ) :
+class Covid19 {
+   public:
+    Parameter s_init, beta, mu, it, Dd, Fr, HC, Fh, Ci;
+    Integrator S, I, R, D;
+    Covid19(double _beta, double _mu, double _s_init, double _it, double _Dd,
+            double _Fr, double _HC, double _Fh, double _Ci)
+        : s_init(_s_init),
+          beta(_beta),
+          mu(_mu),
+          it(_it),
+          Dd(_Dd),
+          Fr(_Fr),
+          HC(_HC),
+          Fh(_Fh),
+          Ci(_Ci),
+          S(-beta * Ci / it, s_init.Value()),
+          I(beta * Ci / it - I / Dd, 40),
+          R(I / Dd * (1 - Fr)),
+          D(I / Dd * Fr) {}
 
-    s_init(_s_init), beta(_beta), mu(_mu), it(_it), Dd(_Dd), Fr(_Fr), HC(_HC), Fh(_Fh),
-    S (-beta * I * mu * (S / s_init) / it , s_init.Value()),
-    I ( beta * I * mu * (S / s_init) / it - I / Dd , 25.0),
-    R ( I / Dd * (1-Fr)),
-    D ( I / Dd * Fr) {}
-
-    void SetParameters(double _beta, double _mu, double _s_init, double _it, double _Dd, double _Fr, double _HC, double _Fh ) { 
+    void SetParameters(double _beta, double _mu, double _s_init, double _it,
+                       double _Dd, double _Fr, double _HC, double _Fh,
+                       double _Ci) {
         s_init = _s_init;
         beta = _beta;
         mu = _mu;
@@ -83,6 +94,7 @@ class Covid19{
         Fr = _Fr;
         HC = _HC;
         Fh = _Fh;
+        Ci = _Ci;
         S.Init(_s_init);
     }
 
@@ -96,6 +108,52 @@ class Covid19{
       else{
           Fr = 0.03;
       }
+      double F = S.Value() / s_init.Value();
+      
+      switch (type) {
+        case 0:
+            Ci = (I.Value() * mu.Value() * F);
+            break;
+        case 1:
+            if (Time < 25) {  // Before lockdowns
+                Ci = (I.Value() * mu.Value() * F);
+            } 
+            else if ((Time >= 25) && (Time <= 85)) {  // One short
+                Ci = (I.Value() * mu.Value() * 0.1 * F);  // hi = 0.1 is DEF_HI FIXME:
+            } 
+            else {                                  // After short lockdown
+                Ci = (I.Value() * mu.Value() * 0.5 * F);  // q = 0.5 is DEF_HI FIXME:
+            }
+            break;
+        case 2:
+            if (Time <= 24) {  // Before lockdowns
+                Ci = (I.Value() * mu.Value() * F);
+            } else if ((Time >= 25) && (Time <= 55)) {  // Short lockdown
+                Ci = (I.Value() * mu.Value() * 0.1 * F);
+            } else if ((Time >= 56) && (Time <= 85)) {  // Smart lockdown
+                Ci = (I.Value() * mu.Value() * 0.6 * F);
+            } else if ((Time >= 86) && (Time <= 115)) {  // Short lockdown
+                Ci = (I.Value() * mu.Value() * 0.1 * F);
+            } else {  // After all lockdowns
+                Ci = (I.Value() * mu.Value() * 0.5 * F);
+            }
+            break;
+        case 3:
+            if (Time <= 24) {  // Before lockdowns
+                Ci = (I.Value() * mu.Value() * (S.Value() / s_init.Value()));
+            } else if ((Time >= 25) && (Time <= 65)) {   // One medium
+                Ci = (I.Value() * mu.Value() * 0.1 * F);
+            } else if ((Time >= 66) && (Time <= 106)) {  // One smart
+                Ci = (I.Value() * mu.Value() * 0.6 * F);
+            } else {  // After all lockdowns
+                Ci = (I.Value() * mu.Value() * 0.5 * F);
+            }
+
+            break;
+
+        default:
+            break;
+      }
     }
 
     void Out() {
@@ -104,10 +162,9 @@ class Covid19{
          cout << Time << ' ' << S.Value() << ' ' << I.Value() << ' ' << R.Value() << ' ' << D.Value() << '\n';
       }
     }
-    
 };
 
-Covid19 c19(0,0,0,0,0,0,0,0);
+Covid19 c19(0,0,0,0,0,0,0,0, 0);
 
 void Sample() { 
   c19.Out();
@@ -119,14 +176,15 @@ Sampler S(Sample, StepPrn);
 // experiment description:
 int main(int argc, char *argv[]) {  
   get_params params(argc, argv);
-  c19.SetParameters(params.beta, params.mu, params.S, params.it, params.Dd, params.Fr, params.HC, params.Fh);
+  c19.SetParameters(params.beta, params.mu, params.S, params.it, params.Dd, params.Fr, params.HC, params.Fh, 0);
   verbose = params.verbose;
+  type = params.type;
   SetOutput("covid19.csv");
-  Print("# Modeling containing covid-19 infection. A conceptual model.\n");
+//   Print("# Modeling containing covid-19 infection. A conceptual model.\n");
   if (verbose) {
     cout << "# Modeling containing covid-19 infection. A conceptual model.\n";
   }
   SetStep(1e-8,1e-3);   // set step size range
-  Init(0,params.range);        // experiment initialization 
+  Init(0,params.range); // experiment initialization 
   Run();                // simulation
 }
