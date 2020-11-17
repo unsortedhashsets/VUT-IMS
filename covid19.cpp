@@ -13,13 +13,14 @@
 // Auxiliar equations:
 //
 //      Ci  = C * F 
-//      F   = (S_init)/S
+//      F   = S/S_init
 //      HiC = SC / HC
 //      SC  = I * Fh
 //
-//           | 3%  if Hic < 5
-//      Fr = | 7%  if 5 < HiC < 30
-//           | 10% if 30 < HiC
+//           | 3%  if Hic < 4
+//           | 7%  if 4 <= HiC < 8
+//      Fr = | 12%  if 8 <= HiC < 16
+//           | 15% if 16 <= HiC
 //
 //           | I * mu                 if no-lockdown
 //           | I * mu * hi            if standard-lockdown
@@ -84,78 +85,81 @@ class Covid19 {
     void Conditions() {
       double SC = I.Value() * params.Fh;
       double HiC = SC / params.HC;
-      if ( HiC > 16.0 ){
+      if ( HiC >= 16.0 ){
           Fr = 0.15;
-      } else if ( HiC > 8.0 ){
+      } else if ( HiC >= 8.0 ){
           Fr = 0.12;
-      } else if ( HiC > 4.0 ){
+      } else if ( HiC >= 4.0 ){
           Fr = 0.07;
       } else{
           Fr = params.Fr;
       }
       
-      double F = S.Value() / params.S;
+      double C;
       switch (params.type) {
         case 1:
             if (Time < 25) {  // Before lockdowns
-                Ci = (I.Value() * params.mu * F);
+                C = (I.Value() * params.mu);
             } 
             else if ((Time >= 25) && (Time <= 85)) {  // One short
-                Ci = (I.Value() * params.mu * params.hi * F);  // hi = 0.1 is DEF_HI FIXME:
+                C = (I.Value() * params.mu * params.hi);  // hi = 0.1 is DEF_HI FIXME:
             } 
             else {                                  // After short lockdown
-                Ci = (I.Value() * params.mu * params.q * F);  // q = 0.5 is DEF_HI FIXME:
+                C = (I.Value() * params.mu * params.q);  // q = 0.5 is DEF_HI FIXME:
             }
             break;
         case 2:
             if (Time <= 24) {  // Before lockdowns
-                Ci = (I.Value() * params.mu * F);
+                C = (I.Value() * params.mu);
             } else if ((Time >= 25) && (Time <= 55)) {  // Short lockdown
-                Ci = (I.Value() * params.mu * params.hi * F);
+                C = (I.Value() * params.mu * params.hi);
             } else if ((Time >= 56) && (Time <= 85)) {  // Smart lockdown
-                Ci = (I.Value() * params.mu * params.k * F);
+                C = (I.Value() * params.mu * params.k);
             } else if ((Time >= 86) && (Time <= 115)) {  // Short lockdown
-                Ci = (I.Value() * params.mu * params.hi * F);
+                C = (I.Value() * params.mu * params.hi);
             } else {  // After all lockdowns
-                Ci = (I.Value() * params.mu * params.q * F);
+                C = (I.Value() * params.mu * params.q);
             }
             break;
         case 3:
             if (Time <= 24) {  // Before lockdowns
-                Ci = (I.Value() * params.mu * F);
+                C = (I.Value() * params.mu);
             } else if ((Time >= 25) && (Time <= 65)) {   // One medium
-                Ci = (I.Value() * params.mu * params.hi * F);
+                C = (I.Value() * params.mu * params.hi);
             } else if ((Time >= 66) && (Time <= 106)) {  // One smart
-                Ci = (I.Value() * params.mu * params.k * F);
+                C = (I.Value() * params.mu * params.k);
             } else {  // After all lockdowns
-                Ci = (I.Value() * params.mu * params.q * F);
+                C = (I.Value() * params.mu * params.q);
             }
             break;
         case 4:
             if (Time < 10) {
-                Ci = (I.Value() * params.mu * F);
+                C = (I.Value() * params.mu);
             } else if ((Time >= 10) && (Time < 21)) {
-                Ci = (I.Value() * params.mu * F * (1 - 0.05));
+                C = (I.Value() * params.mu * (1 - 0.05));
             } else if ((Time >= 21) && (Time < 35)) {
-                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03));
+                C = (I.Value() * params.mu * (1 - 0.05 - 0.03));
             } else if ((Time >= 35) && (Time < 39)) {
-                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03 - 0.03));
+                C = (I.Value() * params.mu * (1 - 0.05 - 0.03 - 0.03));
             } else if ((Time >= 39) && (Time < 42)) {
-                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03 - 0.03 - 0.02));
+                C = (I.Value() * params.mu * (1 - 0.05 - 0.03 - 0.03 - 0.02));
             } else if ((Time >= 42) && (Time < 51)) {
-                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26));
+                C = (I.Value() * params.mu * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26));
             } else if ((Time >= 51) && (Time < 58)) {
-                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26 - 0.05));
+                C = (I.Value() * params.mu * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26 - 0.05));
             } else if ((Time >= 58) && (Time < 79)) {
-                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26 - 0.05 - 0.05));
+                C = (I.Value() * params.mu * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26 - 0.05 - 0.05));
             } else {
-                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26 - 0.05 - 0.05 - 0.01));
+                C = (I.Value() * params.mu * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26 - 0.05 - 0.05 - 0.01));
             }
             break;
+        case 0:
         default:
-            Ci = (I.Value() * params.mu * F);
+            C = (I.Value() * params.mu);
             break;
       }
+      double F = S.Value() / params.S;
+      Ci = C * F;
     }
 
     void Out() {
