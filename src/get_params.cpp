@@ -1,13 +1,11 @@
 #include "get_params.hpp"
 
+get_params::get_params() {
 
-
-get_params::get_params(int argc, char *argv[]) {
-
-    this->S = DEF_S;   // -s --susceptible
-    this->mu = DEF_MU;  // -c --mu
-    this->HC = DEF_HC;  //-h --HC
-
+    this->S = DEF_S;
+    this->mu = DEF_MU;
+    this->HC = DEF_HC;
+    this->I = this->S * 0.0005;
     this->it = DEF_IT;
     this->Dd = DEF_DD;
     this->Fh = DEF_FH;
@@ -15,11 +13,12 @@ get_params::get_params(int argc, char *argv[]) {
     this->Fr = DEF_FR;
     this->type = DEF_LOCK_TYPE;
     this->hi = DEF_HI;
+    this->k = DEF_K;
+    this->q = DEF_Q;
 
     this->verbose = false;
     this->range = 150;
 
-    get_arguments(argc, argv);
 }
 
 void get_params::get_arguments(int argc, char *argv[]) {
@@ -32,11 +31,14 @@ void get_params::get_arguments(int argc, char *argv[]) {
                 {"mu", required_argument, 0, 'c'},
                 {"hc", required_argument, 0, 'h'},
                 {"range", required_argument, 0, 'r'},
+                {"short", required_argument, 0, 'i'},
+                {"smart", required_argument, 0, 'k'},
+                {"post", required_argument, 0, 'q'},
                 {"verbose", no_argument, 0, 'v'},
                 {"type", no_argument, 0, 't'}
             };
 
-        c = getopt_long(argc, argv, "vs:c:h:r:t:", long_options, nullptr);
+        c = getopt_long(argc, argv, "vs:c:h:r:t:i:k:q:", long_options, nullptr);
 
         // detect the end of the options
         if (c == -1) {
@@ -58,6 +60,15 @@ void get_params::get_arguments(int argc, char *argv[]) {
                     break;
                 case 'r':
                     this->range = stoi(optarg);
+                    break;
+                case 'i':
+                    this->hi = stod(optarg);
+                    break;
+                case 'k':
+                    this->k = stod(optarg);
+                    break;
+                case 'q':
+                    this->q = stod(optarg);
                     break;
                 case 'v':
                     this->verbose = true;

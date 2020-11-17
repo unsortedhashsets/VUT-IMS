@@ -14,7 +14,9 @@
 #define DEF_FH   0.13;    //  Fraction requiring hospitalization: 0.13  %               WHO report 73 (2020), Li et al.(2020)
 #define DEF_BETA 0.025;   //  Infectivity:                        0.025 Dimensionless   Estimated with RO
 #define DEF_FR   0.03;    //  Fatality rate:                      0.03  %               WHO report 73 (2020), Li et al.(2020)
-#define DEF_HI   0.1;     //  Fatality rate:                      0.03  %               WHO report 73 (2020), Li et al.(2020)
+#define DEF_HI   0.1;     //  Lockdown effectivity                0.01  %               Assumed
+#define DEF_K    0.4;     //  Smart lockdown effectivity          0.01  %               Assumed
+#define DEF_Q    0.5;     //  Post lockdown effectivity           0.01  %               Assumed
 
 #define DEF_LOCK_TYPE   0;  //  Type of lockdown: 0 - without any lockdown; 
                             //                    1 - basic lockdown (from 25 to 85 day); 
@@ -28,6 +30,7 @@ using namespace std;
 class get_params {
    public:
     double S;
+    double I;
     double it;
     double Dd;
     double Fh;
@@ -38,11 +41,12 @@ class get_params {
     int range;
     int type;
     double hi;
+    double k;
+    double q;
     bool verbose;
-    get_params(int argc, char *argv[]);
     get_params();
-   private:
     void get_arguments(int argc, char *argv[]);
+   private:
     void print_params();
 };
 
