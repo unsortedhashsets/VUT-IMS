@@ -63,31 +63,28 @@ get_params params;
 
 class Covid19 {
    public:
-    Parameter s_init, beta, it, Dd, Fr, Ci;
+    Parameter beta, it, Dd, Fr, Ci;
     Integrator S, I, R, D;
-    Covid19(double _beta, double _s_init, double _it, double _Dd,
-            double _Fr, double _Ci, double _i_init)
-        : s_init(_s_init),
-          beta(_beta),
-          it(_it),
-          Dd(_Dd),
-          Fr(_Fr),
-          Ci(_Ci),
-          S(-beta * Ci / it, s_init.Value()),
-          I(beta * Ci / it - I / Dd, _i_init),
-          R(I / Dd * (1 - Fr)),
-          D(I / Dd * Fr) {}
+    Covid19()
+        : beta(params.beta),
+          it(params.it),
+          Dd(params.Dd),
+          Fr(params.Fr),
+          Ci(0),
+          S(-beta * Ci / it, params.S),
+          I(beta * Ci / it - I / Dd, params.I),
+          R(I / Dd * (1 - Fr), params.R),
+          D(I / Dd * Fr, params.D) {}
 
-    void SetParameters(double _beta, double _s_init, double _it,
-                       double _Dd, double _Fr, double _Ci, double _i_init) {
-        s_init = _s_init;
-        beta = _beta;
-        it = _it;
-        Dd = _Dd;
-        Fr = _Fr;
-        Ci = _Ci;
-        S.Init(_s_init);
-        I.Init(_i_init);
+    void SetParameters() {
+        beta = params.beta;
+        it = params.it;
+        Dd = params.Dd;
+        Fr = params.Fr;
+        S.Init(params.S);
+        I.Init(params.I);
+        R.Init(params.R);
+        D.Init(params.D);
     }
 
     void Conditions() {
@@ -100,12 +97,9 @@ class Covid19 {
       else{
           Fr = 0.03;
       }
-      double F = S.Value() / s_init.Value();
+      double F = S.Value() / params.S;
       
       switch (params.type) {
-        case 0:
-            Ci = (I.Value() * params.mu * F);
-            break;
         case 1:
             if (Time < 25) {  // Before lockdowns
                 Ci = (I.Value() * params.mu * F);
@@ -140,10 +134,9 @@ class Covid19 {
             } else {  // After all lockdowns
                 Ci = (I.Value() * params.mu * params.q * F);
             }
-
-            break;
-
+        case 4:
         default:
+            Ci = (I.Value() * params.mu * F);
             break;
       }
     }
@@ -151,13 +144,13 @@ class Covid19 {
     void Out() {
       Print("%g;%g;%g;%g;%g\n", Time, S.Value(), I.Value(), R.Value(), D.Value());
       if (params.verbose) {
-         cout << Time << ' ' << S.Value() << ' ' << I.Value() << ' ' << R.Value() << ' ' << D.Value() << '\n';
+         cout << Time << '\t' << S.Value() << '\t' << I.Value() << '\t' << R.Value() << '\t' << D.Value() << '\n';
       }
     }
 };
 
 
-Covid19 c19(0,0,0,0,0,0,0);
+Covid19 c19;
 
 void Sample() { 
   c19.Out();
@@ -169,7 +162,7 @@ Sampler S(Sample, StepPrn);
 // experiment description:
 int main(int argc, char *argv[]) {
   params.get_arguments(argc, argv);
-  c19.SetParameters(params.beta, params.S, params.it, params.Dd, params.Fr, 0, params.I);
+  c19.SetParameters();
   SetOutput("covid19.csv");
 //   Print("# Modeling containing covid-19 infection. A conceptual model.\n");
   if (params.verbose) {
