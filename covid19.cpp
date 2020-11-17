@@ -63,23 +63,17 @@ get_params params;
 
 class Covid19 {
    public:
-    Parameter beta, it, Dd, Fr, Ci;
+    Parameter Fr, Ci;
     Integrator S, I, R, D;
     Covid19()
-        : beta(params.beta),
-          it(params.it),
-          Dd(params.Dd),
-          Fr(params.Fr),
+        : Fr(params.Fr),
           Ci(0),
-          S(-beta * Ci / it, params.S),
-          I(beta * Ci / it - I / Dd, params.I),
-          R(I / Dd * (1 - Fr), params.R),
-          D(I / Dd * Fr, params.D) {}
+          S(-params.beta * Ci / params.it, params.S),
+          I (params.beta * Ci / params.it - I / params.Dd, params.I),
+          R(I / params.Dd * (1 - Fr), params.R),
+          D(I / params.Dd * Fr, params.D) {}
 
     void SetParameters() {
-        beta = params.beta;
-        it = params.it;
-        Dd = params.Dd;
         Fr = params.Fr;
         S.Init(params.S);
         I.Init(params.I);
@@ -91,16 +85,16 @@ class Covid19 {
       double SC = I.Value() * params.Fh;
       double HiC = SC / params.HC;
       if ( HiC > 16.0 ){
-          Fr = params.Fr * 4;
+          Fr = 0.15;
       } else if ( HiC > 8.0 ){
-          Fr = params.Fr * 3;
+          Fr = 0.12;
       } else if ( HiC > 4.0 ){
-          Fr = params.Fr * 2;
+          Fr = 0.07;
       } else{
           Fr = params.Fr;
       }
-      double F = S.Value() / params.S;
       
+      double F = S.Value() / params.S;
       switch (params.type) {
         case 1:
             if (Time < 25) {  // Before lockdowns
