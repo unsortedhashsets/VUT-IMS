@@ -35,6 +35,7 @@ void get_params::get_arguments(int argc, char *argv[]) {
                 {"deaths", required_argument, 0, 'D'},
                 {"mu", required_argument, 0, 'c'},
                 {"hc", required_argument, 0, 'h'},
+                {"fr", required_argument, 0, 'f'},
                 {"range", required_argument, 0, 'r'},
                 {"short", required_argument, 0, 'x'},
                 {"smart", required_argument, 0, 'k'},
@@ -43,7 +44,7 @@ void get_params::get_arguments(int argc, char *argv[]) {
                 {"type", no_argument, 0, 't'}
             };
 
-        c = getopt_long(argc, argv, "vS:I:R:D:c:h:r:t:i:k:q:", long_options, nullptr);
+        c = getopt_long(argc, argv, "vS:I:R:D:c:h:r:f:t:x:k:q:", long_options, nullptr);
 
         // detect the end of the options
         if (c == -1) {
@@ -68,6 +69,9 @@ void get_params::get_arguments(int argc, char *argv[]) {
                     break;
                 case 'h':
                     this->HC = stod(optarg);
+                    break;
+                case 'f':
+                    this->Fr = stod(optarg);
                     break;
                 case 't':
                     this->type = stod(optarg);

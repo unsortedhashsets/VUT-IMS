@@ -90,12 +90,14 @@ class Covid19 {
     void Conditions() {
       double SC = I.Value() * params.Fh;
       double HiC = SC / params.HC;
-      if ( HiC > 30.0 ){
-          Fr = 0.10;
-      } else if ( HiC > 4.0 )
-          Fr = 0.07;
-      else{
-          Fr = 0.03;
+      if ( HiC > 16.0 ){
+          Fr = params.Fr * 4;
+      } else if ( HiC > 8.0 ){
+          Fr = params.Fr * 3;
+      } else if ( HiC > 4.0 ){
+          Fr = params.Fr * 2;
+      } else{
+          Fr = params.Fr;
       }
       double F = S.Value() / params.S;
       
@@ -134,7 +136,28 @@ class Covid19 {
             } else {  // After all lockdowns
                 Ci = (I.Value() * params.mu * params.q * F);
             }
+            break;
         case 4:
+            if (Time < 10) {
+                Ci = (I.Value() * params.mu * F);
+            } else if ((Time >= 10) && (Time < 21)) {
+                Ci = (I.Value() * params.mu * F * (1 - 0.05));
+            } else if ((Time >= 21) && (Time < 35)) {
+                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03));
+            } else if ((Time >= 35) && (Time < 39)) {
+                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03 - 0.03));
+            } else if ((Time >= 39) && (Time < 42)) {
+                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03 - 0.03 - 0.02));
+            } else if ((Time >= 42) && (Time < 51)) {
+                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26));
+            } else if ((Time >= 51) && (Time < 58)) {
+                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26 - 0.05));
+            } else if ((Time >= 58) && (Time < 79)) {
+                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26 - 0.05 - 0.05));
+            } else {
+                Ci = (I.Value() * params.mu * F * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26 - 0.05 - 0.05 - 0.01));
+            }
+            break;
         default:
             Ci = (I.Value() * params.mu * F);
             break;
