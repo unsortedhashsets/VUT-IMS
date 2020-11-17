@@ -31,6 +31,8 @@ class get_params {
    public:
     double S;
     double I;
+    double R;
+    double D;
     double it;
     double Dd;
     double Fh;

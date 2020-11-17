@@ -3,9 +3,11 @@
 get_params::get_params() {
 
     this->S = DEF_S;
+    this->I = this->S * 0.0005;
+    this->R = 0.0;
+    this->D = 0.0;
     this->mu = DEF_MU;
     this->HC = DEF_HC;
-    this->I = this->S * 0.0005;
     this->it = DEF_IT;
     this->Dd = DEF_DD;
     this->Fh = DEF_FH;
@@ -27,18 +29,21 @@ void get_params::get_arguments(int argc, char *argv[]) {
         // getopt_long options
         static struct option long_options[] =
             {
-                {"susceptible", required_argument, 0, 's'},
+                {"susceptible", required_argument, 0, 'S'},
+                {"infected", required_argument, 0, 'I'},
+                {"recovered", required_argument, 0, 'R'},
+                {"deaths", required_argument, 0, 'D'},
                 {"mu", required_argument, 0, 'c'},
                 {"hc", required_argument, 0, 'h'},
                 {"range", required_argument, 0, 'r'},
-                {"short", required_argument, 0, 'i'},
+                {"short", required_argument, 0, 'x'},
                 {"smart", required_argument, 0, 'k'},
                 {"post", required_argument, 0, 'q'},
                 {"verbose", no_argument, 0, 'v'},
                 {"type", no_argument, 0, 't'}
             };
 
-        c = getopt_long(argc, argv, "vs:c:h:r:t:i:k:q:", long_options, nullptr);
+        c = getopt_long(argc, argv, "vS:I:R:D:c:h:r:t:i:k:q:", long_options, nullptr);
 
         // detect the end of the options
         if (c == -1) {
@@ -46,8 +51,17 @@ void get_params::get_arguments(int argc, char *argv[]) {
         }
         try{
             switch (c) {
-                case 's':
+                case 'S':
                     this->S = stod(optarg);
+                    break;
+                case 'I':
+                    this->I = stod(optarg);
+                    break;
+                case 'R':
+                    this->R = stod(optarg);
+                    break;
+                case 'D':
+                    this->D = stod(optarg);
                     break;
                 case 'c':
                     this->mu = stod(optarg);
@@ -61,7 +75,7 @@ void get_params::get_arguments(int argc, char *argv[]) {
                 case 'r':
                     this->range = stoi(optarg);
                     break;
-                case 'i':
+                case 'x':
                     this->hi = stod(optarg);
                     break;
                 case 'k':
