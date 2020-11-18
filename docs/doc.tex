@@ -1,11 +1,15 @@
 \documentclass[12pt,a4paper]{article}
 
-\newcommand{\todo}[1]{\textcolor{red}{\textbf{[[TODO]]}} $\Rightarrow$ \textbf{#1}}
 \usepackage[pdftex]{graphicx}
 \usepackage[utf8]{inputenc}
-\usepackage[unicode]{hyperref}
+\usepackage[hyphens]{url}
+\usepackage[unicode, colorlinks=true, hypertexnames=false, allcolors=red, linkcolor=blue]{hyperref}
 \usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{times}
 
+
+\newcommand{\todo}[1]{\textcolor{red}{[[\textbf{TODO} \textbf{#1]]}}}
 
 \begin{document}
     \begin{titlepage}
@@ -41,10 +45,37 @@
     \newpage
 
     \section{Introduction}
-    % The aim of this project is to model 
+    The aim of this project is to implement epidemiological model of COVID-19\footnote{https://en.wikipedia.org/wiki/Coronavirus\_disease\_2019}
+    and simulate it flow using SIMLIB framework\cite{SIMLIB}. 
+    Used model contains different scenarios of quarantine precautions (using different types of lockdown).
+    Based on simulations of this scenarios, influence of particular scenario is shown. 
+    As an experiment, theoretical scenarios form the article \todo{Should we write this?} and current lockdown type in Czech Republic are analyzed.
 
-    \section{Contributors}
+    \todo{We want to prove or not prove efficiency of lockdowns}
+    \subsection{Contributors}    
+    This project is solved by team of two students: Abramov Mikhail and Pavel 
+    Yadlouski.
 
-    \section{Source}
+    \subsection{Model validation}
+    Results of theoretical scenarios simulation are compared with reference results from the article. Experiment with lockdown type in Czech Republic is compared with public 
+    
+    From  \href{http://perchta.fit.vutbr.cz/vyuka-ims/16}{documentation requirements} \\
+    \todo{kapitola 1.2: V jakém prostředí a za jakých podmínek probíhalo experimentální ověřování validity modelu – pokud čtenář/zadavatel vaší zprávy neuvěří ve validitu vašeho modelu, obvykle vaši práci odmítne už v tomto okamžiku.}
+    
+    \section{Sources}
+    Article with the mathematical model \cite{article} for implementation is 
+    found in VUT online library \footnote{https://www-sciencedirect-com.ezproxy.lib.vutbr.cz}
+    
+    \section{Model}
+    \section{Implementation}
+    \section{Experiment}
+    \todo{Misha napishy suda}
+    \section{Conclusion}
+    \todo{Co se naucili}
+    \todo{Doporuceni}
 
+    \todo{Experiment with other country}
+    \clearpage
+	\bibliographystyle{abbrv}
+	\bibliography{citation}
 \end{document}
