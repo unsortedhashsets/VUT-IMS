@@ -45,8 +45,12 @@
     \newpage
 
     \section{Introduction}
-    The aim of this project is to implement epidemiological model of COVID-19\footnote{https://en.wikipedia.org/wiki/Coronavirus\_disease\_2019}
-    and simulate it flow using SIMLIB framework\cite{SIMLIB}. 
+    First aim is to determine the possibilities for determining the value of the effectiveness of various restrictive measures taken by the government of the Czech Republic for the period from September 1, 2020 till the last day of the project - December 7, 2020.
+    Second aim is to create a predictive model for determining the number of persons who have illness in the same time, persons who have been ill or otherwise have immunity
+    (in the model, we proceed from the assumption that immunity is stable and guarantees the absence of recurrent disease for the duration of this study)
+    \TODO{перенести это в пункт с допущениями когда он будет?}, the number persons who will not be able to resist the disease and as a result will die. 
+    \TODO{Данные показатели очень важны для принятия решения о: 1) вводе новых мер 2) отмене старых мер 3) подготовке больничных мест, т.к. при их нехватке смертность значительно возрастает 4) оценка последствий как мер так и самой болезни}
+    
     Used model contains different scenarios of quarantine precautions (using different types of lockdown).
     Based on simulations of this scenarios, influence of particular scenario is shown. 
     As an experiment, theoretical scenarios form the article \todo{Should we write this?} and current lockdown type in Czech Republic are analyzed.
@@ -58,7 +62,11 @@
 
     \subsection{Model validation}
     Results of theoretical scenarios simulation are compared with reference results from the article. Experiment with lockdown type in Czech Republic is compared with public 
-    
+    \todo{Для достижения поставленных задач было выбрано исследование - ссылочка. Данная статья использует модифицированную модель СИРД для оценки изучения и оценки различных моделей карантинных мер. 
+          Данная модель без модификаций имеет довольно широкое распространенние и часто используется для описания распространения заболеваний. (можно бахнуть несколько других статей как подтверждение что модель часто импользуется)
+          Валидация корректности имплементации данной модели была сверена с результатами представленными в статье а сама статья подвержена критическому анализу и незначительной корректировке формул.
+          Далее для определения эффективности мер принятых чешским правительство (надо накидать ссылочек на меры мб) использовалась модель подготовленная в соответствии с приведенной выше статьей и статистика по заболеванию Ковид из официальных источников (ссылочка на ковид стат).
+          За валидацию корректности наших гипотетических оценок принято соответствие основных трендов развития модели с данныими официальной статистики}.
     From  \href{http://perchta.fit.vutbr.cz/vyuka-ims/16}{documentation requirements} \\
     \todo{kapitola 1.2: V jakém prostředí a za jakých podmínek probíhalo experimentální ověřování validity modelu – pokud čtenář/zadavatel vaší zprávy neuvěří ve validitu vašeho modelu, obvykle vaši práci odmítne už v tomto okamžiku.}
     
