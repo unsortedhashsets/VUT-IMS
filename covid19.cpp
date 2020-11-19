@@ -136,21 +136,21 @@ class Covid19 {
             if (Time < 10) {
                 C = (I.Value() * params.mu);
             } else if ((Time >= 10) && (Time < 21)) {
-                C = (I.Value() * params.mu * (1 - 0.05));
+                C = (I.Value() * params.mu * (1 - params.o1));
             } else if ((Time >= 21) && (Time < 35)) {
-                C = (I.Value() * params.mu * (1 - 0.05 - 0.03));
+                C = (I.Value() * params.mu * (1 - params.o1 - params.o2));
             } else if ((Time >= 35) && (Time < 39)) {
-                C = (I.Value() * params.mu * (1 - 0.05 - 0.03 - 0.03));
+                C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3));
             } else if ((Time >= 39) && (Time < 42)) {
-                C = (I.Value() * params.mu * (1 - 0.05 - 0.03 - 0.03 - 0.02));
+                C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3 - params.o4));
             } else if ((Time >= 42) && (Time < 51)) {
-                C = (I.Value() * params.mu * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26));
+                C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3 - params.o4 - params.o5));
             } else if ((Time >= 51) && (Time < 58)) {
-                C = (I.Value() * params.mu * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26 - 0.05));
+                C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3 - params.o4 - params.o5 - params.o6));
             } else if ((Time >= 58) && (Time < 79)) {
-                C = (I.Value() * params.mu * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26 - 0.05 - 0.05));
+                C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3 - params.o4 - params.o5 - params.o6 - params.o7));
             } else {
-                C = (I.Value() * params.mu * (1 - 0.05 - 0.03 - 0.03 - 0.02 - 0.26 - 0.05 - 0.05 - 0.01));
+                C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3 - params.o4 - params.o5 - params.o6 - params.o7 - params.o8));
             }
             break;
         case 0:

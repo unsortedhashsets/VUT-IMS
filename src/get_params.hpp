@@ -45,6 +45,16 @@ class get_params {
     double hi;
     double k;
     double q;
+
+    double o1;
+    double o2;
+    double o3;
+    double o4;
+    double o5;
+    double o6;
+    double o7;
+    double o8;
+
     bool verbose;
     get_params();
     void get_arguments(int argc, char *argv[]);

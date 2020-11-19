@@ -18,6 +18,15 @@ get_params::get_params() {
     this->k = DEF_K;
     this->q = DEF_Q;
 
+    this->o1 = 0;
+    this->o2 = 0;
+    this->o3 = 0;
+    this->o4 = 0;
+    this->o5 = 0;
+    this->o6 = 0;
+    this->o7 = 0;
+    this->o8 = 0;
+
     this->verbose = false;
     this->range = 150;
 
@@ -40,11 +49,19 @@ void get_params::get_arguments(int argc, char *argv[]) {
                 {"short", required_argument, 0, 'x'},
                 {"smart", required_argument, 0, 'k'},
                 {"post", required_argument, 0, 'q'},
+                    {"o1", required_argument, 0, '1'},
+                    {"o2", required_argument, 0, '2'},
+                    {"o3", required_argument, 0, '3'},
+                    {"o4", required_argument, 0, '4'},
+                    {"o5", required_argument, 0, '5'},
+                    {"o6", required_argument, 0, '6'},
+                    {"o7", required_argument, 0, '7'},
+                    {"o8", required_argument, 0, '8'},
                 {"verbose", no_argument, 0, 'v'},
                 {"type", no_argument, 0, 't'}
             };
 
-        c = getopt_long(argc, argv, "vS:I:R:D:c:h:r:f:t:x:k:q:", long_options, nullptr);
+        c = getopt_long(argc, argv, "vS:I:R:D:c:h:r:f:t:x:k:q:1:2:3:4:5:6:7:8:", long_options, nullptr);
 
         // detect the end of the options
         if (c == -1) {
@@ -87,6 +104,30 @@ void get_params::get_arguments(int argc, char *argv[]) {
                     break;
                 case 'q':
                     this->q = stod(optarg);
+                    break;
+                case '1':
+                    this->o1 = stod(optarg);
+                    break;
+                case '2':
+                    this->o2 = stod(optarg);
+                    break;                
+                case '3':
+                    this->o3 = stod(optarg);
+                    break;                
+                case '4':
+                    this->o4 = stod(optarg);
+                    break;                
+                case '5':
+                    this->o5 = stod(optarg);
+                    break;               
+                case '6':
+                    this->o6 = stod(optarg);
+                    break;                
+                case '7':
+                    this->o7 = stod(optarg);
+                    break;               
+                case '8':
+                    this->o8 = stod(optarg);
                     break;
                 case 'v':
                     this->verbose = true;
