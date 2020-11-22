@@ -1,10 +1,13 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[12pt,a4paper,english]{article}
 
 \usepackage[pdftex]{graphicx}
+% \usepackage[english, russian]{babel}
 \usepackage[utf8]{inputenc}
+% \usepackage[]{fontenc}
+% \usepackage[T1, T2A]{fontenc}
+
 \usepackage[hyphens]{url}
 \usepackage[unicode, colorlinks=true, hypertexnames=false, allcolors=red, linkcolor=blue]{hyperref}
-\usepackage[T1]{fontenc}
 \usepackage{xcolor}
 \usepackage{times}
 
@@ -45,44 +48,65 @@
     \newpage
 
     \section{Introduction}
-    First aim is to determine the possibilities for determining the value of the effectiveness of various restrictive measures taken by the government of the Czech Republic for the period from September 1, 2020 till the last day of the project - December 7, 2020.
-    Second aim is to create a predictive model for determining the number of persons who have illness in the same time, persons who have been ill or otherwise have immunity
+    The first aim is to determine the possibilities for determining the value of the effectiveness of various restrictive measures taken by the government of the Czech Republic for the period from September 1, 2020 till the last day of the project - December 7, 2020.
+
+    The second aim is to create a predictive model for determining the number of persons who have illness in the same time, persons who have been ill or otherwise have immunity
     (in the model, we proceed from the assumption that immunity is stable and guarantees the absence of recurrent disease for the duration of this study)
-    \TODO{перенести это в пункт с допущениями когда он будет?}, the number persons who will not be able to resist the disease and as a result will die. 
-    \TODO{Данные показатели очень важны для принятия решения о: 1) вводе новых мер 2) отмене старых мер 3) подготовке больничных мест, т.к. при их нехватке смертность значительно возрастает 4) оценка последствий как мер так и самой болезни}
+    % \todo{перенести это в пункт с допущениями когда он будет?}, the number persons who will not be able to resist the disease and as a result will die. 
+    % \todo{Данные показатели очень важны для принятия решения о: 1) вводе новых мер 2) отмене старых мер 3) подготовке больничных мест, т.к. при их нехватке смертность значительно возрастает 4) оценка последствий как мер так и самой болезни}
     
     Used model contains different scenarios of quarantine precautions (using different types of lockdown).
     Based on simulations of this scenarios, influence of particular scenario is shown. 
-    As an experiment, theoretical scenarios form the article \todo{Should we write this?} and current lockdown type in Czech Republic are analyzed.
+    As an experiment, theoretical scenarios form the article and current lockdown type in Czech Republic are analyzed.
 
-    \todo{We want to prove or not prove efficiency of lockdowns}
     \subsection{Contributors}    
     This project is solved by team of two students: Abramov Mikhail and Pavel 
     Yadlouski.
 
     \subsection{Model validation}
-    Results of theoretical scenarios simulation are compared with reference results from the article. Experiment with lockdown type in Czech Republic is compared with public 
-    \todo{Для достижения поставленных задач было выбрано исследование - ссылочка. Данная статья использует модифицированную модель СИРД для оценки изучения и оценки различных моделей карантинных мер. 
-          Данная модель без модификаций имеет довольно широкое распространенние и часто используется для описания распространения заболеваний. (можно бахнуть несколько других статей как подтверждение что модель часто импользуется)
-          Валидация корректности имплементации данной модели была сверена с результатами представленными в статье а сама статья подвержена критическому анализу и незначительной корректировке формул.
-          Далее для определения эффективности мер принятых чешским правительство (надо накидать ссылочек на меры мб) использовалась модель подготовленная в соответствии с приведенной выше статьей и статистика по заболеванию Ковид из официальных источников (ссылочка на ковид стат).
-          За валидацию корректности наших гипотетических оценок принято соответствие основных трендов развития модели с данныими официальной статистики}.
-    From  \href{http://perchta.fit.vutbr.cz/vyuka-ims/16}{documentation requirements} \\
-    \todo{kapitola 1.2: V jakém prostředí a za jakých podmínek probíhalo experimentální ověřování validity modelu – pokud čtenář/zadavatel vaší zprávy neuvěří ve validitu vašeho modelu, obvykle vaši práci odmítne už v tomto okamžiku.}
+    Results of theoretical scenarios simulation are compared with reference results from the article. 
+    The article by itself was subjected to critical analysis and minor formulas adjustments.
+    Experiment with lockdown type in Czech Republic is compared with reality:) 
     
-    \section{Sources}
-    Article with the mathematical model \cite{article} for implementation is 
+    % \todo{Для достижения поставленных задач было выбрано исследование - ссылочка. Данная статья использует модифицированную модель СИРД для оценки изучения и оценки различных моделей карантинных мер. 
+    %       Данная модель без модификаций имеет довольно широкое распространенние и часто используется для описания распространения заболеваний. (можно бахнуть несколько других статей как подтверждение что модель часто импользуется)
+    %       Валидация корректности имплементации данной модели была сверена с результатами представленными в статье а сама статья подвержена критическому анализу и незначительной корректировке формул. <- DONE
+    %       Далее для определения эффективности мер принятых чешским правительство (надо накидать ссылочек на меры мб) использовалась модель подготовленная в соответствии с приведенной выше статьей и статистика по заболеванию Ковид из официальных источников (ссылочка на ковид стат).
+    %       За валидацию корректности наших гипотетических оценок принято соответствие основных трендов развития модели с данныими официальной статистики}.
+    
+    \section{Topic analysis}
+    The necessary information to research this topic was found in scientific articles.
+
+    The base for a lot methods is SIR model. 
+    SIR\footnote{https://en.wikipedia.org/wiki/Compartmental\_models\_in\_epidemiology} model is one of the simplest compartment methods. 
+    This method compares and three values:
+    \begin{enumerate}
+        \item \textbf{S} -- the number of \textbf{s}usceptible individuals
+        \item \textbf{I} -- the number of \textbf{i}nfectious individuals.
+        \item \textbf{R} -- the number of \textbf{r}emoved (and immune) or deceased individuals
+    \end{enumerate} 
+
+    \subsection{Approaches}
+    For more complex view of system behavior, our model extends basic SIR model with separating the number of recovered and deceased individuals into two variables and addition of auxiliary and state variables that represent hospital capacity, contacts, contacts with infected. 
+    As a result, there is a model of 4 stock variables.
+    \todo{JUST DO IT}
+    \subsection{Sources}
+    Article with the mathematical model \cite{math_article} for implementation is 
     found in VUT online library \footnote{https://www-sciencedirect-com.ezproxy.lib.vutbr.cz}
+
+    \section{Concept model}
     
-    \section{Model}
-    \section{Implementation}
     \section{Experiment}
+    
     \todo{Misha napishy suda}
+
     \section{Conclusion}
     \todo{Co se naucili}
+    
     \todo{Doporuceni}
 
     \todo{Experiment with other country}
+
     \clearpage
 	\bibliographystyle{abbrv}
 	\bibliography{citation}
