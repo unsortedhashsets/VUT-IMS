@@ -1,7 +1,9 @@
 \documentclass[12pt,a4paper,english]{article}
 
+\usepackage[left=2cm, top=3cm, text={17cm, 24cm}]{geometry} 
 \usepackage[pdftex]{graphicx}
 \usepackage[utf8]{inputenc}
+\usepackage{tabularx}
 \usepackage[hyphens]{url}
 \usepackage[unicode, colorlinks=true, hypertexnames=false, allcolors=red, linkcolor=blue]{hyperref}
 \usepackage{xcolor}
@@ -21,7 +23,7 @@
             \end{figure}
             \vspace{1.5cm}
 
-            \Large{\textbf{Epidemiological models - macro level model}} \\
+            \Large{\textbf{Epidemiological model on macro level}} \\
             \large{Modelling and Simulation}
 
             \vspace{0.5cm}
@@ -71,7 +73,7 @@
     %       За валидацию корректности наших гипотетических оценок принято соответствие основных трендов развития модели с данныими официальной статистики}.
     
     \section{Topic analysis}
-    The necessary information to research this topic was found in scientific articles from IRCACS-International Research Center for Applied Complexity Sciences in  Colombia written by Danny Ibarra-Vega\cite{math_article}
+    
 
     As epidemic situation in the world become worth with time, there is need to take appropriate precautions based on mathematical models and simulation. 
     One of the base mathematical model for simulation of expansion of the epidemic is SIR model. 
@@ -84,42 +86,95 @@
         \item \textbf{R} -- the number of \textbf{r}emoved (and immune) or deceased individuals
     \end{enumerate} 
 
+    \subsection{Sources}
+    The necessary information to research this topic was found in scientific articles from IRCACS-International Research Center for Applied Complexity Sciences in  Colombia written by Danny Ibarra-Vega\cite{math_article}.
+
     \subsection{Approaches}
     For more complex view of system behavior, a mathematical model has been adopted with the Systems Dynamics(SD) methodology\footnote{https://en.wikipedia.org/wiki/System\_dynamics}.
     The core of this methodology is that SD models solve the problem of simultaneity (mutual causation) by updating all variables in small time increments with positive and negative feedbacks and time delays structuring the interactions and control.
     
     Used SD model extends basic SIR model with separating the number of recovered and deceased individuals into two variables and addition of auxiliary and state variables that represent hospital capacity, contacts, contacts with infected. 
-    As a result, there is a model of 4 stock variables (\ref{conc_model}).
-    
-    \subsection{Sources}
-    Article with the mathematical model \cite{math_article} for implementation is 
-    found in VUT online library \footnote{https://www-sciencedirect-com.ezproxy.lib.vutbr.cz}
+    As a result, there is a model of 4 stock variables.
 
+    \newpage
     \section{Concept model} \label{conc_model}
     In the model, we proceed from the assumption that immunity is stable and guarantees the absence of recurrent disease for the duration of research period. 
     
-    \newpage
-    Following diagram taken from the reference article. 
+    \begin{center}
+        \begin{figure}[ht!]
+            \includegraphics[scale=1]{1-s2.0-S0048969720324347-gr1.jpg}
+            \caption{Stock and flows diagram}
+            \label{fig:graph}
+        \end{figure}
+    \end{center}
     
-    \begin{figure}[ht!]
-        \includegraphics[scale=0.85]{1-s2.0-S0048969720324347-gr1.jpg}
-        \caption[]{Stock and flows diagram \cite{math_article}}
-        \label{fig:graph}
-    \end{figure}
-
-    It shows how each stock (susceptible, infectious, removed, deaths) variable is connected and influenced by other stock and auxiliary variable. 
-    Auxiliary variables are constructed from bibliographic references or some estimated, as shown in the  
-
-    \begin{table}
-        
+    The diagram \ref{fig:graph}  from the reference article shows how each stock (susceptible, infectious, removed, deaths) variable is connected and influenced by other stock and auxiliary variable.
+    Also 
+    Auxiliary variables are constructed from bibliographic references or some estimated.
+    
+    \begin{table}[h!]
+        \centering
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            Name & Initial value & Units & Reference \\
+            \hline
+            Susceptible	                        & 100,000 &	People & Assumed\\
+            Incubation time	                    & 5	 &  Days & Wu et al. (2020)\\
+            Disease duration                    & 14	&  Days & Wu et al. (2020)\\
+            Fraction requiring hospitalization	& 13  & \% & WHO report 73 (2020), Li et al. (2020) \\
+            Infectivity	                        & 0.025 & Dimensionless & Estimated with RO \\
+            Contacts rate	                    & 70   & Contacts/person & Assumed \\
+            Hospital capacity	                & 1000 & Beds & Assumed \\
+            Fatality rate	                    & 3	   & \% & WHO report 73 (2020), Wu et al. (2020) \\
+            \hline
+        \end{tabularx}
+        \caption{Initial conditions \cite{math_article}}
+        \label{tab:init_vars}
     \end{table}
+    
+    Meaning and notation of individual variable is explained in the table \ref{tab:not_var}
+
+    \begin{table}[h!]
+        \begin{center}
+            \begin{tabular}{|c|c|c|}
+                \hline
+                Type of variable & Parameter & Notation \\
+                \hline
+                Auxiliary & Contacts rate                      & $\mu$  \\
+                Auxiliary & Fatality rate                      & Fr \\
+                Auxiliary & Hospital capacity strain index     & HiC \\
+                Parameter & Incubation time                    & it \\
+                Parameter & Disease duration                   & Dd \\
+                Parameter & Fraction requiring hospitalization & Fh \\
+                Parameter & Infectivity                        & $\beta$ \\
+                Parameter & Hospital capacity                  & HC \\
+                Parameter & Lockdown effectivity               & $\lambda$ \\
+                Parameter & Smart lockdown effectivity         & k \\
+                Parameter & Post lockdown effectivity          & q \\
+                Parameter & Serious cases                      & SC  \\
+                Parameter & Hospital capacity                  & HC \\
+                Stock     & Susceptible                        & S \\
+                Stock     & Infected                           & I \\
+                Stock     & Recovered                          & R \\
+                Stock     & Deaths                             &  \\
+                \hline
+            \end{tabular}
+        \end{center}
+        \caption{Notation and variables \cite{math_article}}
+        \label{tab:not_var}
+    \end{table}
+
     Mathematical equations:
         \begin{align*}
             \frac{dS}{dt} &= - \frac{\beta Ci}{it}\\ \\
             \frac{dI}{dt} &= \frac{\beta C}{it} - \frac{I}{Dd} * (1 - Fr)\\ \\
             \frac{dR}{dt} &= \frac{I}{Dd} * (1 - Fr)\\ \\
             \frac{dD}{dt} &= \frac{I}{Dd} * (Fr)
-        \end{align*}        
+        \end{align*}
+        
+    During implementation of the model from the article, we found out that some variables from equations are not defined in the article. 
+    For example variable F is not present in the article \todo{Maybe in another way?} 
+
     \section{Experiment}
     
     \todo{Misha napishy suda}
