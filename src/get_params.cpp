@@ -2,6 +2,7 @@
 
 get_params::get_params() {
 
+    this->filename = "covid19.csv";
     this->S = DEF_S;
     this->I = this->S * 0.0005;
     this->R = 0.0;
@@ -38,6 +39,7 @@ void get_params::get_arguments(int argc, char *argv[]) {
         // getopt_long options
         static struct option long_options[] =
             {
+                {"out", required_argument, 0, 'o'},
                 {"susceptible", required_argument, 0, 'S'},
                 {"infected", required_argument, 0, 'I'},
                 {"recovered", required_argument, 0, 'R'},
@@ -61,7 +63,7 @@ void get_params::get_arguments(int argc, char *argv[]) {
                 {"type", no_argument, 0, 't'}
             };
 
-        c = getopt_long(argc, argv, "vS:I:R:D:c:h:r:f:t:x:k:q:1:2:3:4:5:6:7:8:", long_options, nullptr);
+        c = getopt_long(argc, argv, "vo:S:I:R:D:c:h:r:f:t:x:k:q:1:2:3:4:5:6:7:8:", long_options, nullptr);
 
         // detect the end of the options
         if (c == -1) {
@@ -131,6 +133,9 @@ void get_params::get_arguments(int argc, char *argv[]) {
                     break;
                 case 'v':
                     this->verbose = true;
+                    break;
+                case 'o':
+                    this->filename.assign(optarg);
                     break;
                 default:
                     cerr << "get_arguments(): wrong argument \"" << optarg << "\"!" << endl;

@@ -182,7 +182,7 @@ Sampler S(Sample, StepPrn);
 int main(int argc, char *argv[]) {
   params.get_arguments(argc, argv);
   c19.SetParameters();
-  SetOutput("covid19.csv");
+  SetOutput(params.filename.c_str());
 //   Print("# Modeling containing covid-19 infection. A conceptual model.\n");
   if (params.verbose) {
     cout << "# Modeling containing covid-19 infection. A conceptual model.\n";

@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <getopt.h>
-#include <string.h>
+#include <string>
 
 #define DEF_S    100000;  //  Susceptible:       X People          Assumed
 #define DEF_MU   70;      //  Contacts rate:     Y Contacts/person Assumed
@@ -29,6 +29,7 @@ using namespace std;
 
 class get_params {
    public:
+    string filename;
     double S;
     double I;
     double R;
