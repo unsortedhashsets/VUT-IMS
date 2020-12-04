@@ -85,11 +85,9 @@ class Covid19 {
     void Conditions() {
       double SC = I.Value() * params.Fh;
       double HiC = SC / params.HC;
-      if ( HiC >= 16.0 ){
-          Fr = 0.15;
-      } else if ( HiC >= 8.0 ){
-          Fr = 0.12;
-      } else if ( HiC >= 4.0 ){
+      if ( HiC > 30.0 ){
+          Fr = 0.1;
+      } else if ( HiC > 5 ){
           Fr = 0.07;
       } else{
           Fr = params.Fr;
@@ -189,7 +187,6 @@ int main(int argc, char *argv[]) {
   if (params.verbose) {
     cout << "# Modeling containing covid-19 infection. A conceptual model.\n";
   }
-  SetStep(1e-8,1e-3);   // set step size range
   Init(0,params.range); // experiment initialization 
   Run();                // simulation
 }
