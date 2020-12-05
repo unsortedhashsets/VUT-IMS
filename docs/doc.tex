@@ -2,6 +2,8 @@
 
 \usepackage[left=2cm, top=3cm, text={17cm, 24cm}]{geometry} 
 \usepackage[pdftex]{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage[utf8]{inputenc}
 \usepackage{tabularx}
 \usepackage[hyphens]{url}
@@ -10,6 +12,7 @@
 \usepackage{times}
 \usepackage{amsmath}
 
+\graphicspath{ {./images/} } 
 
 \newcommand{\todo}[1]{\textcolor{red}{[[\textbf{TODO} \textbf{#1]]}}}
 
@@ -72,8 +75,6 @@
     %       Далее для определения эффективности мер принятых чешским правительство (надо накидать ссылочек на меры мб) использовалась модель подготовленная в соответствии с приведенной выше статьей и статистика по заболеванию Ковид из официальных источников (ссылочка на ковид стат).
     %       За валидацию корректности наших гипотетических оценок принято соответствие основных трендов развития модели с данныими официальной статистики}.
     
-
-    \newpage
     \section{Topic analysis}
 
     As epidemic situation in the world become worth with time, there is need to take appropriate precautions based on mathematical models and simulation.
@@ -108,7 +109,6 @@
     Used SD model extends basic SIR model with separating the number of recovered and deceased individuals into two variables and addition of auxiliary and state variables that represent hospital capacity, contacts, contacts with infected. 
     As a result, there is a model of 4 stock variables and 4 corresponding differential equations (\ref{eq:quations}).
 
-    \newpage
     \section{Concept model} \label{conc_model}
     In the model, we proceed from the assumption that immunity is stable and guarantees the absence of recurrent disease for the duration of research period. 
     
@@ -188,9 +188,9 @@
 
 
     During implementation of the model from the article, we found out that some variables in auxiliary equations are not defined in the article. 
-    For example variable F is not present in the article. Using addition source article from Harvard University \cite{Harvard}. We determined that
-    variable F is Si divideed on the total number of population, otherwise we decided not to use additional variable for population and decided to use
-    initial value of Susceptibles as total population. 
+    For example variable $F$ is not present in the article. 
+    Using addition source article from Harvard University \cite{Harvard} we determined that variable $F$ is $Si$ divided on the total number of population $P$, otherwise we decided not to use additional variable for population and decided to use
+    initial value of Susceptible as total population. 
     
     So, auxiliary equations that we used have following form
     \begin{subequations}
@@ -221,8 +221,64 @@
         \end{align*}
     \end{subequations}
 
+    There are 4 types of the lockdown:
+    \begin{enumerate}
+        \item without lockdown
+        \item standard lockdown
+        \item smart lockdown
+    \end{enumerate}
+    \noindent They are differ in effectivity of each one (parameters $\lambda$ and $k$ for standard and smart lockdown respectively). 
+    In addition, there is parameter $q$ that shows post-lockdown effectivity.
+    By effectiveness we mean how much contact rate is reduced (in \%).
+
     \section{Experiment}
-    
+    At first, we conducted experiments from the source article.
+    This experiments simulate different quarantine scenarios\footnote{In the source article there is diagram only for the first scenario (\ref{first_scen})}.
+
+    \subsection{First scenario}
+    \label{first_scen}
+    In this scenario there is no lockdown at all.
+    \begin{figure}[h!]
+        \centering
+        \begin{minipage}{.5\textwidth}
+            \centering
+            \includegraphics[scale=0.65]{without-lockdown.jpg}
+            \captionof{figure}{Result from the article}
+            \label{fig:test1}
+        \end{minipage}%
+        \begin{minipage}{.5\textwidth}
+            \centering
+            \includegraphics[scale=0.45]{chart.png}
+            \captionof{figure}{Our result}
+            \label{fig:test2}
+        \end{minipage}
+    \end{figure}
+
+    \subsection{Second scenario}
+    The second scenario includes one standard scenario for 60 days from the 25th day after first beginning of the simulation till 85th day.
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[scale=0.55]{1large.png}
+    \end{figure}
+
+    \subsection{Third scenario}
+    In the third theoretical scenario there are two standard and one smart lockdown.
+    Each lasts for 30 days.
+    Smart lockdown acts between two standard lockdown
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[scale=0.55]{2short+smart.png}
+    \end{figure}
+
+    \subsection{Fourth scenario}
+    In the last theoretical scenario there is only to lockdown: one standard and one smart.
+    Each lasts for 40 days.
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[scale=0.55]{med+smart.png}
+    \end{figure}
+
+    \subsection{Our experiment}
     \todo{Misha napishy suda}
 
     \section{Conclusion}
