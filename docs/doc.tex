@@ -3,7 +3,7 @@
 \usepackage[left=2cm, top=3cm, text={17cm, 24cm}]{geometry} 
 \usepackage[pdftex]{graphicx}
 \usepackage{caption}
-\usepackage{subcaption}
+\usepackage{subfig}
 \usepackage[utf8]{inputenc}
 \usepackage{tabularx}
 \usepackage[hyphens]{url}
@@ -229,7 +229,7 @@
     \end{enumerate}
     \noindent They are differ in effectivity of each one (parameters $\lambda$ and $k$ for standard and smart lockdown respectively). 
     In addition, there is parameter $q$ that shows post-lockdown effectivity.
-    By effectiveness we mean how much contact rate is reduced (in \%).
+    By effectivity we mean how much contact rate is reduced (in \%).
 
     \section{Experiment}
     At first, we conducted experiments from the source article.
@@ -240,48 +240,74 @@
     In this scenario there is no lockdown at all.
     \begin{figure}[h!]
         \centering
-        \begin{minipage}{.5\textwidth}
-            \centering
-            \includegraphics[scale=0.65]{without-lockdown.jpg}
-            \captionof{figure}{Result from the article}
-            \label{fig:test1}
-        \end{minipage}%
-        \begin{minipage}{.5\textwidth}
-            \centering
-            \includegraphics[scale=0.45]{chart.png}
-            \captionof{figure}{Our result}
-            \label{fig:test2}
-        \end{minipage}
+        \subfloat[Result from the article]{
+            \includegraphics[width=0.45\textwidth]{without-lockdown.jpg}
+        }
+        \hfill
+        \subfloat[Our result]{
+            \includegraphics[width=0.45\textwidth]{without-lockdown-our.png}
+        }
+        \caption{Results of the first scenario}
     \end{figure}
 
     \subsection{Second scenario}
-    The second scenario includes one standard scenario for 60 days from the 25th day after first beginning of the simulation till 85th day.
+    \label{second_scenario}
+    The second scenario includes one standard lockdown for 60 days from the 25th day after first beginning of the simulation till 85th day (long).
     \begin{figure}[h!]
         \centering
         \includegraphics[scale=0.55]{1large.png}
+        \caption{Results of the second scenario}
     \end{figure}
 
     \subsection{Third scenario}
+    \label{third_scenario}
     In the third theoretical scenario there are two standard and one smart lockdown.
-    Each lasts for 30 days.
+    Each lasts for 30 days (short).
     Smart lockdown acts between two standard lockdown
     \begin{figure}[h!]
         \centering
         \includegraphics[scale=0.55]{2short+smart.png}
+        \caption{Results of the third scenario}
     \end{figure}
 
     \subsection{Fourth scenario}
-    In the last theoretical scenario there is only to lockdown: one standard and one smart.
-    Each lasts for 40 days.
+    \label{fourth_scenario}
+    In the last theoretical scenario there is only two lockdown: one standard and one smart.
+    Each lasts for 40 days (medium).
     \begin{figure}[h!]
         \centering
         \includegraphics[scale=0.55]{med+smart.png}
+        \caption{Results of the fourth scenario}
     \end{figure}
 
     \subsection{Our experiment}
     \todo{Misha napishy suda}
 
-    \section{Conclusion}
+    \section{Conclusion} 
+    \begin{figure}[h!]
+        \centering
+        \subfloat[Result from the article]{
+            \includegraphics[width=0.45\textwidth]{deaths.jpg}
+        }
+        \hfill
+        \subfloat[Our result]{
+            \includegraphics[width=0.45\textwidth]{deaths-our.png}
+        }
+        \caption{Deaths}
+    \end{figure}
+
+    \begin{figure}[h!]
+        \centering
+        \subfloat[Result from the article]{
+            \includegraphics[width=0.45\textwidth]{infected.png}
+        }
+        \hfill
+        \subfloat[Our result]{
+            \includegraphics[width=0.45\textwidth]{infected-our.png}
+        }
+        \caption{Infected}
+    \end{figure}
+    After all the experiments, we came to the conclusion that the most effective  scenario is the fourth (\ref{fourth_scenario}) based on count of deaths.
     \todo{Co se naucili}
     
     \todo{Doporuceni}
