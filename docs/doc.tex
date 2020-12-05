@@ -14,7 +14,8 @@
 
 \graphicspath{ {./images/} } 
 
-\newcommand{\todo}[1]{\textcolor{red}{[[\textbf{TODO} \textbf{#1]]}}}
+\newcommand{\todo}[1]{\noindent\textcolor{red}{[[\textbf{TODO} \textbf{#1]]}}\\}
+\newcommand{\phony}[1]{\textcolor{gray}{#1} \\}
 
 \begin{document}
     \begin{titlepage}
@@ -87,7 +88,10 @@
     And each subgroup represents a specific stage of the epidemic.
     The transition rates from one class to another are mathematically expressed as derivatives, this way model is defined by differential equations.
     In any time of the simulation following equation should valid:
-    $$P = \sum_{n = 1}^{n} S^t_n$$
+    \begin{equation}
+        \label{primary_question}
+        P = \sum_{n = 1}^{n} S^t_n
+      \end{equation}
     where $P$ is size of initial and $S^t_n$ is size of the subgroup $S_n$ in the time $t$. 
 
     One of the base mathematical model for simulation of expansion of the epidemic is SIR\footnote{\href{https://en.wikipedia.org/wiki/Compartmental\_models\_in\_epidemiology}{https://en.wikipedia.org/wiki/Compartmental\_models\_in\_epidemiology}} model. 
@@ -180,12 +184,11 @@
     \begin{subequations} \label{eq:quations}
         \begin{align*} 
             \frac{dS}{dt} &= - \frac{\beta Ci}{it}  \\ \\
-            \frac{dI}{dt} &= \frac{\beta C}{it} - \frac{I}{Dd} * (1 - Fr)\\ \\
+            \frac{dI}{dt} &= \frac{\beta C}{it} - \frac{I}{Dd}\\ \\ % compaire with source question -> (1 - Fr) leads to poruseni of must have question 
             \frac{dR}{dt} &= \frac{I}{Dd} * (1 - Fr)\\ \\
             \frac{dD}{dt} &= \frac{I}{Dd} * (Fr)
         \end{align*}
     \end{subequations}
-
 
     During implementation of the model from the article, we found out that some variables in auxiliary equations are not defined in the article. 
     For example variable $F$ is not present in the article. 
@@ -281,6 +284,7 @@
     \end{figure}
 
     \subsection{Our experiment}
+
     \todo{Misha napishy suda}
 
     \section{Conclusion} 
@@ -307,11 +311,29 @@
         }
         \caption{Infected}
     \end{figure}
-    After all the experiments, we came to the conclusion that the most effective  scenario is the fourth (\ref{fourth_scenario}) based on count of deaths.
-    \todo{Co se naucili}
-    
-    \todo{Doporuceni}
 
+    During implementation we met with serious inaccuracies that led to a difference in graphics
+    \begin{itemize}
+        \item \textbf{No initial values}\\ In the source article there is no initial value of Infected variable
+        \item \textbf{Logical mistake in question}\\
+        The model assumes that recovered person can't be infected again.
+        In source model question for Infected variable has following form:
+        $$\frac{dI}{dt} = \frac{\beta C}{it} - \frac{I}{Dd} * (1 - Fr)$$
+        \noindent The problem is that factor $(1 - Fr)$ includes only recovered people, but not dead people. Logically dead person can't be infected again too :)
+        This mistake leads to violation of primary question \eqref{primary_question}
+    \end{itemize}
+
+    After all the experiments, we came to the conclusion that the most effective  scenario is the fourth \eqref{fourth_scenario} based on count of deaths.
+
+    \subsection{Conclusion of our experiment}
+
+
+    \phony{Fuck}
+    \todo{Misha napishy suda}
+
+
+    \todo{Co se naucili}
+    \todo{Doporuceni}    
     \todo{Experiment with other country}
 
     \clearpage
