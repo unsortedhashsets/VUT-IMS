@@ -52,12 +52,10 @@
     \newpage
 
     \section{Introduction}
-    The first aim of this project is to determine the possibilities for determining the value of the effectiveness of various restrictive measures taken by the government of the Czech Republic for the period from September 1, 2020 till the last day of the project - December 7, 2020.
+    The first aim of this project is to determine the possibilities for determining the value of the effectivity of various restrictive measures taken by the government of the Czech Republic for the period from September 1, 2020 till the last day of the project - December 5, 2020.
 
     The second aim is to create a predictive model for determining the number of persons who have illness in the same time, persons who have been ill or otherwise have immunity
-    % \todo{перенести это в пункт с допущениями когда он будет?}, the number persons who will not be able to resist the disease and as a result will die. 
-    % \todo{Данные показатели очень важны для принятия решения о: 1) вводе новых мер 2) отмене старых мер 3) подготовке больничных мест, т.к. при их нехватке смертность значительно возрастает 4) оценка последствий как мер так и самой болезни}
-    
+
     Used model contains different scenarios of quarantine precautions (using different types of lockdown).
     Based on simulations of this scenarios, influence of particular scenario is shown. 
     As an experiment, theoretical scenarios from the article and current lockdown type in Czech Republic are analyzed.
@@ -69,13 +67,7 @@
     \subsection{Model validation}
     Results of theoretical scenarios simulation are compared with reference results from the article. 
     The article by itself was subjected to critical analysis and minor formulas adjustments.
-    Experiment with lockdown type in Czech Republic is compared with reality:) 
-    
-    % \todo{Для достижения поставленных задач было выбрано исследование - ссылочка. Данная статья использует модифицированную модель СИРД для оценки изучения и оценки различных моделей карантинных мер. 
-    %       Данная модель без модификаций имеет довольно широкое распространенние и часто используется для описания распространения заболеваний. (можно бахнуть несколько других статей как подтверждение что модель часто импользуется)
-    %       Валидация корректности имплементации данной модели была сверена с результатами представленными в статье а сама статья подвержена критическому анализу и незначительной корректировке формул. <- DONE
-    %       Далее для определения эффективности мер принятых чешским правительство (надо накидать ссылочек на меры мб) использовалась модель подготовленная в соответствии с приведенной выше статьей и статистика по заболеванию Ковид из официальных источников (ссылочка на ковид стат).
-    %       За валидацию корректности наших гипотетических оценок принято соответствие основных трендов развития модели с данныими официальной статистики}.
+    Experiment with lockdown type in Czech Republic is compared with reality based on statistics values.
     
     \section{Topic analysis}
 
@@ -306,8 +298,53 @@
     \newpage
     \subsection{Our experiment}
 
-    \todo{Misha napishy suda}
-
+    The purpose of our experiment was to determine the level of measures effectivity  taken by the government of the Czech Republic to counter covid19.
+    
+    Data provided by the information portal of the Ministry of Health (https://onemocneni-aktualne.mzcr.cz/covid-19) 
+    were used as reference materials to compare model with real situation.
+    
+    \begin{table}[h!]
+        \centering
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            Name & Initial value & Units & Reference \\
+            \hline
+            Susceptible	                        & 10,680,000 &	People & Statistics \\
+            Infected                            & 4,917 &	People & Statistics \\
+            Recovered                           & 19,783 &	People & Statistics \\
+            Deaths                              & 428 &	People & Statistics \\
+            Incubation time	                    & 5	 &  Days & Wu et al. (2020)\\
+            Disease duration                    & 14	&  Days & Wu et al. (2020)\\
+            Fraction requiring hospitalization	& 13  & \% & WHO report 73 (2020), Li et al. (2020) \\
+            Infectivity	                        & 0.025 & Dimensionless & Estimated with RO \\
+            Contacts rate	                    & 29   & Contacts/person & Assumed \\
+            Hospital capacity	                & 74760 & Beds & Statistics \\
+            Fatality rate	                    & 1.7	   & \% & Assumed \\
+            \hline
+        \end{tabularx}
+        \caption{Initial conditions}
+        \label{tab:init_vars2}
+    \end{table}
+    
+    The reasons for the change in the movement of the model are the measures introduced by the Government. In the model, we abstract
+    from weather factors, because it is already obvious that in the warm summer time the virus slows down its spread.
+    We also assume that every measure to reduce the spread of coronavirus cannot have negative effectivity. And also we abstract from the differences in social groups and population heterogeneity.
+    
+    \todo{Pasha poprav' ssylochki prosim suda}
+    Investigated measures and model time intervals:
+    \begin{itemize}
+        \item 0 - 9   day -- no measures, setting the basic parameters of the model: Fatality rate, Contacts rate
+        \item 10 - 20 day -- indoor mandatory  masks (https://www.mzcr.cz/tiskove-centrum-mz/od-ctvrtka-budou-povinne-rousky-ve-vnitrnich-prostorach-budov-v-cele-cr/)
+        \item 21 - 33 day -- distance education in universities (First prague) (https://www.idnes.cz/zpravy/domaci/koronavirus-covid-19-aktualizace-semafor-praha-cesko.A200921_181218_domaci_lesa)
+        \item 34 - 37 day -- distance education in all universities  (https://apps.odok.cz/djv-agenda?date=2020-09-30)
+        \item 38 - 40 day -- sports and recreation facilities are closed. (https://www.lidovky.cz/domov/zive-vlada-projednala-nova-covidova-opatreni-kabinet-informuje-jake-restrikce-cekaji-cesko.A201008_110950_ln_domov_sei)
+        \item 41 - 49 day -- distance education in schools (https://koronavirus.mzcr.cz/vlada-od-stredy-zprisni-preventivni-opatreni-posle-ochranne-pomucky-invalidnim-duchodcum)
+        \item 50 - 56 day -- outdoor mandatory masks, shops and restaurants are closed (https://www.kurzy.cz/zpravy/562948-od-stredy-21-rijna-do-odvolani-rousky-vsude-v-kontaktu-s-dalsi-osobou-i-venku/ , https://prachaticky.denik.cz/zpravy_region/zavreni-obchodu-i-sluzeb-obchodnici-se-obavaji-financnich-problemu-20201021.html)
+        \item 57 - 77 day -- imposed curfew (https://www.denik.cz/z_domova/cesko-narizeni-aktualne-omezeni-20201028.html)
+        \item 78 - 92 day -- PES4 (https://onemocneni-aktualne.mzcr.cz/pes)
+        \item 93 - XX day -- PES3 (https://www.vlada.cz/cz/media-centrum/aktualne/do-tretiho-stupne-pes-prejde-cesko-ve-ctvrtek--rozhodla-vlada-185260/)
+    \end{itemize}
+    
     \newpage
     \section{Conclusion} 
     \begin{figure}[H]
@@ -349,9 +386,33 @@
 
     \subsection{Conclusion of our experiment}
 
-    \phony{Fuck}
-    \todo{Misha napishy suda}
-
+    According to the results obtained, the measures received the following percentage of effectivity (percentage decrease in the number of social contacts):
+    \begin{itemize}
+        \item 0 - 9   day -- no measures -- 0\% -- Total: 0\% 
+        \item 10 - 20 day -- indoor mandatory  masks -- 5\% -- Total: 5\% 
+        \item 21 - 33 day -- distance education in universities (first Prague) -- 1\% -- Total: 6\%
+        \item 34 - 37 day -- distance education in all universities -- 1\% -- Total: 7\%
+        \item 38 - 40 day -- sports and recreation facilities are closed -- 1\% -- Total: 8\%
+        \item 41 - 49 day -- distance education in schools -- 3\% -- Total: 11\%
+        \item 50 - 56 day -- outdoor mandatory masks, shops and restaurants are closed -- 15\% -- Total: 26\%
+        \item 57 - 77 day -- imposed curfew -- 20\% -- Total: 46\%
+        \item 78 - 92 day -- PES4 -- 25\% -- Total: 71\%
+        \item 93 - XX day -- PES3 -- -35\% -- Total: 36\%
+    \end{itemize}
+    
+    Next, we will consider two scenarios with a third and fourth level PES.
+    
+    \todo{Pasha jobni kartinki prosim suda}
+    
+    Thus, we can say that measures by themselves cannot be effective. Measures can only be effective in combination. It is not enough to close universities and leave restaurants and bars open. The opposite is not enough too, when leaving schools and universities open.
+    
+     \todo{Pasha i ssylochku tut}
+     
+    Despite the fact that we did not have enough time to assess the decrease in the level of the PES system, we tried to predict two scenarios, from which it follows that it is necessary to maintain the fourth level of danger, which has been shown by the system itself (https: //www.novinky. cz / koronavirus / clanek / on-line-index-rizika-stoupl-zpet-do-ctvrteho-stupne-zbyva-jediny-bod-40344376).
+    
+    We also recommend a more systematic approach when introducing restrictive measures, 
+    because it is often not so easy to determine which measure really influenced the improvement of the situation,
+    at the moment the PES system can solve this problem, since it consolidates a number of measures at each level within itself and their application becomes systemic.
     \todo{Co se naucili}
     \todo{Doporuceni}    
 
