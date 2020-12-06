@@ -11,6 +11,7 @@
 \usepackage{xcolor}
 \usepackage{times}
 \usepackage{amsmath}
+\usepackage{float}
 
 \graphicspath{ {./images/} } 
 
@@ -256,39 +257,60 @@
     \subsection{Second scenario}
     \label{second_scenario}
     The second scenario includes one standard lockdown for 60 days from the 25th day after first beginning of the simulation till 85th day (long).
-    \begin{figure}[h!]
+    \begin{itemize}
+        \item 0 - 25 day -- no lockdown
+        \item 26 - 85 day -- standard lockdown 
+        \item 86 - 150 -- post-lockdown period
+    \end{itemize}
+    \begin{figure}[H]
         \centering
-        \includegraphics[scale=0.55]{1large.png}
+        \includegraphics[scale=0.45]{1large.png}
         \caption{Results of the second scenario}
     \end{figure}
 
+    \newpage
     \subsection{Third scenario}
     \label{third_scenario}
     In the third theoretical scenario there are two standard and one smart lockdown.
     Each lasts for 30 days (short).
-    Smart lockdown acts between two standard lockdown
+    Smart lockdown acts between two standard lockdown.
+    \begin{itemize}
+        \item 0 - 25 day -- no lockdown
+        \item 26 - 55 day -- standard lockdown 
+        \item 56 - 85 day -- smart lockdown
+        \item 86 - 115 -- standard lockdown
+        \item 116 - 150 -- post-lockdown period
+    \end{itemize}
     \begin{figure}[h!]
         \centering
         \includegraphics[scale=0.55]{2short+smart.png}
         \caption{Results of the third scenario}
     \end{figure}
-
+    
     \subsection{Fourth scenario}
     \label{fourth_scenario}
     In the last theoretical scenario there is only two lockdown: one standard and one smart.
     Each lasts for 40 days (medium).
+    \begin{itemize}
+        \item 0 - 25 day -- no lockdown
+        \item 26 - 65 day -- standard lockdown 
+        \item 66 - 105 day -- smart lockdown
+        \item 106 - 150 -- post-lockdown period
+    \end{itemize}
     \begin{figure}[h!]
         \centering
         \includegraphics[scale=0.55]{med+smart.png}
         \caption{Results of the fourth scenario}
     \end{figure}
-
+    
+    \newpage
     \subsection{Our experiment}
 
     \todo{Misha napishy suda}
 
+    \newpage
     \section{Conclusion} 
-    \begin{figure}[h!]
+    \begin{figure}[H]
         \centering
         \subfloat[Result from the article]{
             \includegraphics[width=0.45\textwidth]{deaths.jpg}
@@ -300,7 +322,7 @@
         \caption{Deaths}
     \end{figure}
 
-    \begin{figure}[h!]
+    \begin{figure}[H]
         \centering
         \subfloat[Result from the article]{
             \includegraphics[width=0.45\textwidth]{infected.png}
@@ -327,16 +349,14 @@
 
     \subsection{Conclusion of our experiment}
 
-
     \phony{Fuck}
     \todo{Misha napishy suda}
 
-
     \todo{Co se naucili}
     \todo{Doporuceni}    
-    \todo{Experiment with other country}
 
     \clearpage
+    \nocite{*}
 	\bibliographystyle{abbrv}
 	\bibliography{citation}
 \end{document}
