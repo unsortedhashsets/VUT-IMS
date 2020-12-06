@@ -27,6 +27,7 @@ get_params::get_params() {
     this->o6 = 0;
     this->o7 = 0;
     this->o8 = 0;
+    this->o9 = 0;
 
     this->verbose = false;
     this->range = 150;
@@ -59,11 +60,12 @@ void get_params::get_arguments(int argc, char *argv[]) {
                     {"o6", required_argument, 0, '6'},
                     {"o7", required_argument, 0, '7'},
                     {"o8", required_argument, 0, '8'},
+                    {"o9", required_argument, 0, '9'},
                 {"verbose", no_argument, 0, 'v'},
                 {"type", no_argument, 0, 't'}
             };
 
-        c = getopt_long(argc, argv, "vo:S:I:R:D:c:h:r:f:t:x:k:q:1:2:3:4:5:6:7:8:", long_options, nullptr);
+        c = getopt_long(argc, argv, "vo:S:I:R:D:c:h:r:f:t:x:k:q:1:2:3:4:5:6:7:8:9:", long_options, nullptr);
 
         // detect the end of the options
         if (c == -1) {
@@ -130,6 +132,9 @@ void get_params::get_arguments(int argc, char *argv[]) {
                     break;               
                 case '8':
                     this->o8 = stod(optarg);
+                    break;
+                case '9':
+                    this->o9 = stod(optarg);
                     break;
                 case 'v':
                     this->verbose = true;

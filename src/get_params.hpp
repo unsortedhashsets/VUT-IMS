@@ -55,6 +55,7 @@ class get_params {
     double o6;
     double o7;
     double o8;
+    double o9;
 
     bool verbose;
     get_params();

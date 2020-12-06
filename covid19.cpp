@@ -131,24 +131,26 @@ class Covid19 {
             }
             break;
         case 4:
-            if (Time < 10) {
+            if (Time < 9) {
                 C = (I.Value() * params.mu);
-            } else if ((Time >= 10) && (Time < 21)) {
+            } else if ((Time >= 9) && (Time < 20)) {
                 C = (I.Value() * params.mu * (1 - params.o1));
-            } else if ((Time >= 21) && (Time < 35)) {
+            } else if ((Time >= 20) && (Time < 34)) {
                 C = (I.Value() * params.mu * (1 - params.o1 - params.o2));
-            } else if ((Time >= 35) && (Time < 39)) {
+            } else if ((Time >= 34) && (Time < 38)) {
                 C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3));
-            } else if ((Time >= 39) && (Time < 42)) {
+            } else if ((Time >= 38) && (Time < 41)) {
                 C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3 - params.o4));
-            } else if ((Time >= 42) && (Time < 51)) {
+            } else if ((Time >= 41) && (Time < 50)) {
                 C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3 - params.o4 - params.o5));
-            } else if ((Time >= 51) && (Time < 58)) {
+            } else if ((Time >= 20) && (Time < 57)) {
                 C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3 - params.o4 - params.o5 - params.o6));
-            } else if ((Time >= 58) && (Time < 79)) {
+            } else if ((Time >= 57) && (Time < 78)) {
                 C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3 - params.o4 - params.o5 - params.o6 - params.o7));
-            } else {
+            } else if ((Time >= 78) && (Time < 90)) {
                 C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3 - params.o4 - params.o5 - params.o6 - params.o7 - params.o8));
+            } else {
+                C = (I.Value() * params.mu * (1 - params.o1 - params.o2 - params.o3 - params.o4 - params.o5 - params.o6 - params.o7 - params.o8 - params.o9));
             }
             break;
         case 0:
